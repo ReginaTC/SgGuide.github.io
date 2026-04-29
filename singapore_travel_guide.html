@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     :root {
       --red: #db3a34;
@@ -848,6 +850,16 @@
       box-shadow: var(--shadow-soft);
       margin-bottom: 18px;
     }
+    .route-map-fallback {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #f3d7b8;
+      background: #fff4e7;
+      color: #9a4f16;
+      font-size: 12px;
+      display: none;
+    }
     .route-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
@@ -1114,6 +1126,7 @@
         <div class="route-timeline-list" id="guideTimelineList"></div>
       </div>
     </div>
+    <div class="route-map-fallback" id="guideMapFallback">地图资源加载失败（网络限制）。请切换网络后刷新页面，或稍后重试。</div>
   </div>
 
   <!-- ════════ DAY 1 ════════ -->
@@ -1928,7 +1941,12 @@ var guideRouteData = {
 
 function initGuideRouteMap() {
   var el = document.getElementById('guideRouteMap');
-  if (!el || typeof L === 'undefined') return;
+  var fallback = document.getElementById('guideMapFallback');
+  if (!el || typeof L === 'undefined') {
+    if (fallback) fallback.style.display = 'block';
+    return;
+  }
+  if (fallback) fallback.style.display = 'none';
   guideMap = L.map('guideRouteMap', { zoomControl: true }).setView([1.296, 103.852], 12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM' }).addTo(guideMap);
 
@@ -2348,8 +2366,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- Leaflet + Firebase + html2pdf -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+if (typeof window.L === 'undefined') {
+  document.write('<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/script>');
+}
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
