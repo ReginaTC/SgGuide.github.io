@@ -2114,6 +2114,8 @@ var ciPhotoData = null;
 var allCheckins = [];
 var map = null;
 var ciMarkers = [];
+var ciAuthReady = false;
+var ciAuthUid = null;
 
 function renderCiLocationGrid() {
   var grid = document.getElementById('ciLocationGrid');
@@ -2242,6 +2244,13 @@ function ciCompressDataUrl(dataUrl, maxW, quality) {
 
 async function ciSubmit() {
   if (!ciLocation) { ciToast('请先选择一个打卡地点'); return; }
+  if (!ciAuthReady) {
+    ciToast('登录尚未完成，请稍后再试');
+    try {
+      await firebase.auth().signInAnonymously();
+    } catch (e) {}
+    return;
+  }
   var btn = document.getElementById('ciSubmitBtn');
   btn.disabled = true;
   btn.textContent = '同步中...';
@@ -2251,6 +2260,7 @@ async function ciSubmit() {
       photoUrl = await ciCompressDataUrl(ciPhotoData, 1080, 0.68);
     }
     var checkin = {
+      uid: ciAuthUid,
       user: ciUser,
       locationId: ciLocation.id,
       locationName: ciLocation.name,
@@ -2264,6 +2274,9 @@ async function ciSubmit() {
     await checkinsRef.push(checkin);
     ciCloseModal();
     ciToast('打卡成功！');
+    setTimeout(function() {
+      window.location.reload();
+    }, 900);
   } catch(e) {
     ciToast('同步失败：' + ciParseError(e));
   } finally {
@@ -2492,11 +2505,17 @@ var firebaseConfig = {
   appId: "1:805691422387:web:08113ab0fcb881ff93a2c6"
 };
 firebase.initializeApp(firebaseConfig);
+firebase.auth().onAuthStateChanged(function(user) {
+  ciAuthReady = !!user;
+  ciAuthUid = user ? user.uid : null;
+});
 firebase.auth().signInAnonymously().catch(function(err) {
   console.error('Anonymous auth failed:', err);
+  ciAuthReady = false;
+  ciAuthUid = null;
   setTimeout(function() {
     if (typeof ciToast === 'function') {
-      ciToast('登录失败：请稍后重试或检查 Firebase Auth 配置');
+      ciToast('匿名登录失败：请在 Firebase Auth 启用 Anonymous');
     }
   }, 800);
 });
