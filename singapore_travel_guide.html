@@ -206,6 +206,21 @@
     .checkin-item .item-note { font-size: 13px; color: #555; margin-top: 6px; padding: 8px; background: #f9f9f9; border-radius: 8px; }
     .checkin-item .item-photo { margin-top: 8px; border-radius: 10px; overflow: hidden; }
     .checkin-item .item-photo img { width: 100%; border-radius: 10px; display: block; }
+    .checkin-item .item-actions {
+      margin-top: 8px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .checkin-item .delete-btn {
+      border: 1px solid #f1c1c1;
+      background: #fff5f5;
+      color: #b42318;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
     /* Modal */
     .modal-overlay {
@@ -2177,6 +2192,19 @@ function ciOpenModal() {
 
 function ciCloseModal() { document.getElementById('ciModal').classList.remove('open'); }
 
+function ciParseError(err) {
+  if (!err) return '未知错误';
+  var code = err.code || '';
+  var msg = err.message || String(err);
+  if (code.indexOf('PERMISSION_DENIED') >= 0 || msg.indexOf('PERMISSION_DENIED') >= 0) {
+    return '数据库权限被拒绝（Firebase 规则限制）';
+  }
+  if (code.indexOf('NETWORK_ERROR') >= 0 || msg.indexOf('Failed to fetch') >= 0) {
+    return '网络连接失败，请检查网络后重试';
+  }
+  return msg.length > 80 ? msg.slice(0, 80) + '...' : msg;
+}
+
 async function ciSubmit() {
   if (!ciLocation) { ciToast('请先选择一个打卡地点'); return; }
   var btn = document.getElementById('ciSubmitBtn');
@@ -2185,11 +2213,19 @@ async function ciSubmit() {
   try {
     var photoUrl = null;
     if (ciPhotoData) {
-      var fd = new FormData();
-      fd.append('image', ciPhotoData.split(',')[1]);
-      var resp = await fetch('https://api.imgbb.com/1/upload?key=6d6ab71ef12da2b88db0999f4c69a2c3', { method: 'POST', body: fd });
-      var data = await resp.json();
-      if (data.success) photoUrl = data.data.url;
+      try {
+        var fd = new FormData();
+        fd.append('image', ciPhotoData.split(',')[1]);
+        var resp = await fetch('https://api.imgbb.com/1/upload?key=6d6ab71ef12da2b88db0999f4c69a2c3', { method: 'POST', body: fd });
+        var data = await resp.json();
+        if (data && data.success && data.data && data.data.url) {
+          photoUrl = data.data.url;
+        } else {
+          ciToast('图片上传失败，已改为无图打卡');
+        }
+      } catch (imgErr) {
+        ciToast('图片上传失败，已改为无图打卡');
+      }
     }
     var checkin = {
       user: ciUser,
@@ -2206,7 +2242,7 @@ async function ciSubmit() {
     ciCloseModal();
     ciToast('打卡成功！');
   } catch(e) {
-    ciToast('同步失败，请重试');
+    ciToast('同步失败：' + ciParseError(e));
   } finally {
     btn.disabled = false;
     btn.textContent = '打卡';
@@ -2214,13 +2250,34 @@ async function ciSubmit() {
 }
 
 function ciLoadCheckins() {
-  checkinsRef.orderByChild('timestamp').on('value', function(snap) {
-    allCheckins = [];
-    snap.forEach(function(c) { allCheckins.unshift({ key: c.key, ...c.val() }); });
-    ciRenderList();
-    ciUpdateStats();
-    ciRenderReport();
-  });
+  checkinsRef.on(
+    'value',
+    function(snap) {
+      allCheckins = [];
+      snap.forEach(function(c) {
+        var val = c.val() || {};
+        allCheckins.push({
+          key: c.key,
+          user: val.user || 1,
+          locationId: val.locationId || '',
+          locationName: val.locationName || '未知地点',
+          lat: val.lat,
+          lng: val.lng,
+          day: val.day || 0,
+          photoUrl: val.photoUrl || null,
+          note: val.note || '',
+          timestamp: val.timestamp || 0
+        });
+      });
+      allCheckins.sort(function(a, b) { return (b.timestamp || 0) - (a.timestamp || 0); });
+      ciRenderList();
+      ciUpdateStats();
+      ciRenderReport();
+    },
+    function(err) {
+      ciToast('读取打卡失败：' + ciParseError(err));
+    }
+  );
 }
 
 function ciRenderList() {
@@ -2234,15 +2291,29 @@ function ciRenderList() {
   empty.style.display = 'none';
   var userNames = ['', 'Regina', 'Sherry'];
   list.innerHTML = allCheckins.map(function(c) {
-    var time = new Date(c.timestamp).toLocaleString('zh-CN', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' });
+    var ts = Number(c.timestamp || 0);
+    var time = ts ? new Date(ts).toLocaleString('zh-CN', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '时间未知';
     return '<div class="checkin-item">' +
       '<div class="item-body">' +
         '<div class="item-name">📍 ' + c.locationName + ' · ' + userNames[c.user] + '</div>' +
         '<div class="item-meta"><span>Day ' + c.day + '</span><span>' + time + '</span></div>' +
         (c.note ? '<div class="item-note">' + c.note + '</div>' : '') +
         (c.photoUrl ? '<div class="item-photo"><img src="' + c.photoUrl + '" alt="" onclick="ciOpenLightbox(\'' + c.photoUrl + '\')"></div>' : '') +
+        '<div class="item-actions"><button class="delete-btn" onclick="ciDeleteCheckin(\'' + c.key + '\')">删除</button></div>' +
       '</div></div>';
   }).join('');
+}
+
+async function ciDeleteCheckin(key) {
+  if (!key) return;
+  var ok = confirm('确定删除这条打卡记录吗？删除后不可恢复。');
+  if (!ok) return;
+  try {
+    await checkinsRef.child(key).remove();
+    ciToast('已删除');
+  } catch (e) {
+    ciToast('删除失败：' + ciParseError(e));
+  }
 }
 
 function ciUpdateStats() {
