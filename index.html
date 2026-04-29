@@ -4,39 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🇸🇬 新加坡旅行攻略 · 5月1日–4日</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --red: #e63946;
-      --orange: #f4a261;
-      --yellow: #ffd166;
-      --green: #06d6a0;
-      --blue: #118ab2;
-      --navy: #073b4c;
-      --light: #f8f9fa;
+      --red: #db3a34;
+      --orange: #ef8f35;
+      --yellow: #f2c14e;
+      --green: #18a999;
+      --blue: #1f5e7a;
+      --navy: #16212f;
+      --light: #faf7f2;
       --card-bg: #ffffff;
-      --text: #2d2d2d;
-      --muted: #6c757d;
-      --border: #e9ecef;
+      --text: #1f2a37;
+      --muted: #5d6976;
+      --border: #e7dfd3;
       --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-soft: 0 10px 28px rgba(6, 31, 53, 0.08);
       --radius: 16px;
     }
 
+    html { scroll-behavior: smooth; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: linear-gradient(135deg, #e0f7fa 0%, #f3e5f5 50%, #fff8e1 100%);
+      font-family: "Manrope", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(1200px 460px at 12% -8%, #e5f4ff 0%, transparent 56%),
+        radial-gradient(900px 420px at 100% 0%, #ffefd8 0%, transparent 58%),
+        linear-gradient(175deg, #fffdf8 0%, #f6f8fb 100%);
       color: var(--text);
       min-height: 100vh;
       padding: 0 0 60px;
+      line-height: 1.5;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .25;
+      background-image:
+        linear-gradient(rgba(17, 24, 39, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17, 24, 39, 0.02) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
 
     /* ───── HERO ───── */
     .hero {
-      background: linear-gradient(135deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
+      background:
+        radial-gradient(220px 220px at 85% 22%, rgba(255, 224, 168, 0.3), transparent 70%),
+        linear-gradient(132deg, #0d2037 0%, #102942 45%, #153a4f 100%);
       color: white;
       text-align: center;
-      padding: 60px 24px 80px;
+      padding: 62px 24px 86px;
       position: relative;
       overflow: hidden;
     }
@@ -47,12 +70,17 @@
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='40'/%3E%3C/svg%3E") center/cover;
     }
     .hero-emoji { font-size: 64px; display: block; margin-bottom: 12px; }
-    .hero h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 800; letter-spacing: 1px; }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-family: "DM Serif Display", "Songti SC", serif;
+      font-weight: 400;
+      letter-spacing: .6px;
+    }
     .hero-sub { margin-top: 10px; font-size: 18px; opacity: .8; }
     .hero-tags { margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .tag {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.28);
       padding: 6px 16px;
       border-radius: 999px;
       font-size: 13px;
@@ -66,11 +94,12 @@
     .tab-nav {
       position: sticky;
       top: 0;
-      background: white;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(12px);
       display: flex;
       border-bottom: 1px solid var(--border);
       z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
       margin: -40px auto 24px;
       max-width: 860px;
       border-radius: 12px 12px 0 0;
@@ -92,11 +121,26 @@
       color: var(--red);
       border-bottom-color: var(--red);
     }
+    .tab-btn:focus-visible,
+    .collapse-btn:focus-visible,
+    .checkin-fab:focus-visible,
+    .submit-btn:focus-visible,
+    .export-btn:focus-visible {
+      outline: 3px solid rgba(17, 138, 178, 0.3);
+      outline-offset: -1px;
+    }
     .tab-btn .emoji { font-size: 20px; display: block; margin-bottom: 2px; }
 
     /* ───── PAGE SECTIONS ───── */
     .page-section { display: none; }
-    .page-section.active { display: block; }
+    .page-section.active {
+      display: block;
+      animation: fadeUp .28s ease-out;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     /* ───── CHECK-IN STYLES ───── */
     .checkin-fab {
@@ -407,22 +451,31 @@
     }
     .section-icon {
       width: 44px; height: 44px;
-      background: var(--navy);
-      border-radius: 12px;
+      background: linear-gradient(160deg, var(--navy), #224261);
+      border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
       font-size: 22px; flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(13, 32, 55, 0.25);
     }
-    .section-header h2 { font-size: 22px; font-weight: 700; color: var(--navy); }
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: .2px;
+    }
 
     /* ───── CARDS ───── */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-soft);
       padding: 24px;
       margin-bottom: 16px;
       border-left: 5px solid var(--blue);
+      border-top: 1px solid #f2ede4;
+      transition: transform .2s ease, box-shadow .2s ease;
     }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(6, 31, 53, 0.12); }
     .card.orange { border-color: var(--orange); }
     .card.green  { border-color: var(--green); }
     .card.red    { border-color: var(--red); }
@@ -444,21 +497,21 @@
     .info-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
     .info-value { font-size: 15px; font-weight: 600; margin-top: 4px; color: var(--navy); }
 
-    /* ───── COUNTDOWN BANNER ───── */
+    /* ───── HERO COUNTDOWN ───── */
     .countdown-banner {
-      background: linear-gradient(135deg, #0f3460, #16213e);
       color: white;
       text-align: center;
-      padding: 20px 24px;
+      margin: 18px auto 0;
+      padding: 10px 16px;
+      border-radius: 14px;
+      width: min(560px, 100%);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
       position: relative;
-      overflow: hidden;
+      z-index: 1;
     }
-    .countdown-banner::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='20'/%3E%3C/svg%3E") center/cover;
-    }
+    .countdown-banner::before { display: none; }
     .countdown-pretrip { background: linear-gradient(135deg, #1a1a2e, #16213e); }
     .countdown-intrip  { background: linear-gradient(135deg, #1b4332, #2d6a4f); }
     .countdown-after   { background: linear-gradient(135deg, #6c757d, #495057); }
@@ -494,7 +547,7 @@
 
     /* ───── NEXT UP CARD ───── */
     .next-up-card {
-      background: linear-gradient(135deg, #1b4332, #2d6a4f);
+      background: linear-gradient(132deg, #164b43, #1f7a6d);
       color: white;
       border-radius: 16px;
       padding: 20px 24px;
@@ -580,9 +633,10 @@
     .day-card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-soft);
       overflow: hidden;
       margin-bottom: 24px;
+      border: 1px solid #f2ede4;
     }
     .day-header {
       padding: 18px 24px;
@@ -592,6 +646,17 @@
       color: white;
       font-weight: 700;
       font-size: 18px;
+      position: relative;
+    }
+    .day-header::after {
+      content: '';
+      position: absolute;
+      right: -28px;
+      top: -28px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.25);
     }
     .day-header .date-badge {
       background: rgba(255,255,255,0.25);
@@ -614,7 +679,9 @@
       gap: 16px;
       padding: 12px 0;
       border-bottom: 1px dashed var(--border);
+      transition: background-color .18s ease;
     }
+    .tl-item:hover { background: rgba(6, 31, 53, 0.02); }
     .tl-item:last-child { border-bottom: none; }
     .tl-time {
       flex-shrink: 0;
@@ -631,6 +698,8 @@
       border-radius: 50%;
       background: var(--blue);
       margin-top: 6px;
+      border: 2px solid rgba(255,255,255,.7);
+      box-shadow: 0 0 0 1px rgba(31, 94, 122, .25);
     }
     .tl-dot.orange { background: var(--orange); }
     .tl-dot.green  { background: var(--green); }
@@ -658,8 +727,8 @@
 
     /* ───── TIPS BOX ───── */
     .tips-box {
-      background: linear-gradient(135deg, #fff8e1, #fff3e0);
-      border: 1px solid #ffe082;
+      background: linear-gradient(140deg, #fff7df, #fff2df);
+      border: 1px solid #f3d999;
       border-radius: 12px;
       padding: 18px 20px;
       margin-top: 16px;
@@ -671,12 +740,12 @@
 
     /* ───── NOTICE ───── */
     .notice {
-      background: #e3f2fd;
-      border-left: 4px solid #1976d2;
+      background: linear-gradient(160deg, #eaf5ff 0%, #e6f3f5 100%);
+      border-left: 4px solid #2b6a94;
       border-radius: 8px;
       padding: 14px 18px;
       font-size: 13px;
-      color: #0d47a1;
+      color: #1f4f72;
       margin-top: 16px;
       line-height: 1.6;
     }
@@ -719,10 +788,10 @@
     .collapse-btn {
       flex: 1;
       min-width: 140px;
-      background: linear-gradient(135deg, #0f3460, #16213e);
+      background: linear-gradient(140deg, #112843, #1e415f);
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 14px 20px;
       font-size: 15px;
       font-weight: 600;
@@ -738,7 +807,7 @@
       box-shadow: 0 6px 20px rgba(15, 52, 96, 0.4);
     }
     .collapse-btn.active {
-      background: linear-gradient(135deg, #118ab2, #06d6a0);
+      background: linear-gradient(140deg, #1f5e7a, #18a999);
     }
     .collapse-arrow {
       transition: transform 0.3s;
@@ -758,32 +827,43 @@
       opacity: 1;
     }
 
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table-wrap table { min-width: 680px; }
+
     @media (max-width: 600px) {
       .hero { padding: 40px 16px 60px; }
+      .container { padding: 0 14px; }
+      .tab-btn { font-size: 14px; padding: 12px 0; }
+      .section-header { margin: 36px 0 14px; }
+      .section-header h2 { font-size: 20px; }
+      .card { padding: 18px; }
+      .day-header { padding: 14px 16px; font-size: 16px; }
+      .day-body { padding: 0 16px 14px; }
       .tl-time { width: 56px; font-size: 12px; }
       .tl-title { font-size: 14px; }
+      .checkin-fab { right: 16px; bottom: 16px; width: 58px; height: 58px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ════════ COUNTDOWN BANNER ════════ -->
-<div class="countdown-banner" id="countdownBanner">
-  <div class="countdown-num" id="countdownNum">--</div>
-  <div class="countdown-label" id="countdownLabel">加载中...</div>
-  <div class="countdown-sub" id="countdownSub"></div>
-</div>
-
 <!-- ════════ HERO ════════ -->
 <div class="hero">
   <span class="hero-emoji">🇸🇬</span>
   <h1>新加坡旅行攻略</h1>
-  <p class="hero-sub">5月1日 – 5月4日 · 两人悠闲之旅</p>
+  <p class="hero-sub">5月1日 – 5月4日</p>
+  <div class="countdown-banner" id="countdownBanner">
+    <div class="countdown-num" id="countdownNum">--</div>
+    <div class="countdown-label" id="countdownLabel">加载中...</div>
+    <div class="countdown-sub" id="countdownSub"></div>
+  </div>
   <div class="hero-tags">
     <span class="tag">✈️ TR983 / TR982</span>
     <span class="tag">🏨 Hotel Mi Rochor</span>
-    <span class="tag">📺 老友记沉浸式展览</span>
-    <span class="tag">🧘 P人节奏 · 不特种兵</span>
   </div>
 </div>
 
@@ -1327,6 +1407,7 @@
   </div>
 
   <div class="card" style="padding:0;overflow:hidden;">
+    <div class="table-wrap">
     <table style="width:100%;border-collapse:collapse;">
       <thead>
         <tr style="background:var(--navy);color:white;">
@@ -1358,6 +1439,7 @@
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 
 </div>
@@ -1810,13 +1892,12 @@ function ciRenderList() {
     return;
   }
   empty.style.display = 'none';
-  var userEmojis = ['', '👩', '👨'];
+  var userNames = ['', 'Regina', 'Sherry'];
   list.innerHTML = allCheckins.map(function(c) {
     var time = new Date(c.timestamp).toLocaleString('zh-CN', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' });
     return '<div class="checkin-item">' +
-      '<div class="item-user">' + userEmojis[c.user] + '</div>' +
       '<div class="item-body">' +
-        '<div class="item-name">📍 ' + c.locationName + '</div>' +
+        '<div class="item-name">📍 ' + c.locationName + ' · ' + userNames[c.user] + '</div>' +
         '<div class="item-meta"><span>Day ' + c.day + '</span><span>' + time + '</span></div>' +
         (c.note ? '<div class="item-note">' + c.note + '</div>' : '') +
         (c.photoUrl ? '<div class="item-photo"><img src="' + c.photoUrl + '" alt="" onclick="ciOpenLightbox(\'' + c.photoUrl + '\')"></div>' : '') +
@@ -1854,10 +1935,9 @@ function ciRenderMap() {
   ciMarkers.forEach(function(m) { map.removeLayer(m); });
   ciMarkers = [];
   var userColors = ['', '#e63946', '#3498db'];
-  var userEmojis = ['👩', '👨'];
   allCheckins.forEach(function(c) {
     var icon = L.divIcon({
-      html: '<div style="background:' + userColors[c.user] + ';color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">' + userEmojis[c.user-1] + '</div>',
+      html: '<div style="background:' + userColors[c.user] + ';color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">' + (c.user === 1 ? 'R' : 'S') + '</div>',
       className: '', iconSize: [32, 32], iconAnchor: [16, 16]
     });
     var marker = L.marker([c.lat, c.lng], { icon: icon }).addTo(map);
@@ -1890,7 +1970,7 @@ function ciRenderPhotoWall() {
 function ciRenderTimeline() {
   var tl = document.getElementById('ciTimeline');
   if (!tl) return;
-  var userNames = ['', 'Regina', '同行人'];
+  var userNames = ['', 'Regina', 'Sherry'];
   if (allCheckins.length === 0) {
     tl.innerHTML = '<div class="empty-state"><div class="icon">⏰</div><p>还没有打卡记录</p></div>';
     return;
@@ -1901,7 +1981,7 @@ function ciRenderTimeline() {
       '<div style="position:absolute;left:-8px;top:8px;width:14px;height:14px;background:var(--red);border-radius:50%;border:2px solid white;"></div>' +
       '<div style="font-size:11px;color:#888;">' + time + ' · Day ' + c.day + '</div>' +
       '<div style="font-size:14px;font-weight:600;">📍 ' + c.locationName + '</div>' +
-      '<div style="font-size:11px;color:var(--blue);">' + userNames[c.user] + '</div>' +
+      '<div style="font-size:11px;color:var(--blue);">' + (c.user === 1 ? 'Regina' : 'Sherry') + '</div>' +
       (c.note ? '<div style="font-size:12px;color:#666;margin-top:4px;">' + c.note + '</div>' : '') +
       (c.photoUrl ? '<div style="margin-top:6px;border-radius:8px;overflow:hidden;max-width:180px;"><img src="' + c.photoUrl + '" alt="" style="width:100%;display:block;border-radius:8px;" onclick="ciOpenLightbox(\'' + c.photoUrl + '\')"></div>' : '') +
     '</div>';
@@ -2021,8 +2101,8 @@ var checkinsRef = db.ref('sg-trip-2026/checkins');
     <div class="modal-title">📍 新打卡</div>
 
     <div class="user-selector">
-      <button class="user-btn selected" id="ciUser1Btn" onclick="ciSelectUser(1)"><span class="user-icon">👩</span>Regina</button>
-      <button class="user-btn" id="ciUser2Btn" onclick="ciSelectUser(2)"><span class="user-icon">👨</span>同行人</button>
+      <button class="user-btn selected" id="ciUser1Btn" onclick="ciSelectUser(1)">Regina</button>
+      <button class="user-btn" id="ciUser2Btn" onclick="ciSelectUser(2)">Sherry</button>
     </div>
 
     <div class="form-group">
@@ -2035,7 +2115,7 @@ var checkinsRef = db.ref('sg-trip-2026/checkins');
       <div class="photo-area" id="ciPhotoArea" onclick="ciTriggerPhoto()">
         <div class="hint"><span class="icon">📷</span>点击拍照或从相册选择</div>
       </div>
-      <input type="file" id="ciPhotoInput" accept="image/*" capture="environment" style="display:none;" onchange="ciHandlePhoto(this.files[0])">
+      <input type="file" id="ciPhotoInput" accept="image/*" style="display:none;" onchange="ciHandlePhoto(this.files[0])">
     </div>
 
     <div class="form-group">
