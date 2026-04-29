@@ -41,33 +41,37 @@
       position: relative;
     }
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .25;
-      background-image:
-        linear-gradient(rgba(17, 24, 39, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(17, 24, 39, 0.02) 1px, transparent 1px);
-      background-size: 24px 24px;
+      content: none;
+    }
+    body::after {
+      content: none;
     }
 
     /* ───── HERO ───── */
     .hero {
       background:
-        radial-gradient(220px 220px at 85% 22%, rgba(255, 224, 168, 0.3), transparent 70%),
-        linear-gradient(132deg, #0d2037 0%, #102942 45%, #153a4f 100%);
+        linear-gradient(145deg, rgba(9, 18, 31, 0.54), rgba(17, 39, 62, 0.42)),
+        url('bg.jpg') center center/cover no-repeat;
       color: white;
       text-align: center;
       padding: 62px 24px 86px;
       position: relative;
       overflow: hidden;
+      border-radius: 0 0 28px 28px;
+      box-shadow: 0 16px 40px rgba(10, 24, 39, 0.28);
     }
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='40'/%3E%3C/svg%3E") center/cover;
+      background:
+        radial-gradient(900px 280px at 14% 0%, rgba(255,255,255,0.24), transparent 65%),
+        radial-gradient(1000px 320px at 88% 0%, rgba(255, 222, 173, 0.25), transparent 68%);
+      z-index: 0;
+    }
+    .hero > * {
+      position: relative;
+      z-index: 1;
     }
     .hero-emoji { font-size: 64px; display: block; margin-bottom: 12px; }
     .hero h1 {
@@ -85,6 +89,7 @@
       border-radius: 999px;
       font-size: 13px;
       backdrop-filter: blur(4px);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
     }
 
     /* ───── CONTAINER ───── */
@@ -505,11 +510,12 @@
       padding: 10px 16px;
       border-radius: 14px;
       width: min(560px, 100%);
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(6px);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.32);
+      backdrop-filter: blur(10px);
       position: relative;
       z-index: 1;
+      box-shadow: 0 10px 24px rgba(10, 24, 39, 0.2);
     }
     .countdown-banner::before { display: none; }
     .countdown-pretrip { background: linear-gradient(135deg, #1a1a2e, #16213e); }
@@ -834,6 +840,126 @@
     }
     .table-wrap table { min-width: 680px; }
 
+    .route-map-card {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #e9e2d8;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 18px;
+    }
+    .route-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: 14px;
+      align-items: start;
+    }
+    #guideRouteMap {
+      height: 380px;
+      border-radius: 12px;
+      border: 1px solid #e8e1d7;
+      overflow: hidden;
+    }
+    .route-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .route-chip {
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #243447;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f7f4ef;
+      border: 1px solid #e9e2d8;
+      font-weight: 600;
+      transition: all .2s ease;
+    }
+    .route-chip.active {
+      color: #fff;
+      background: var(--navy);
+      border-color: var(--navy);
+      box-shadow: 0 8px 18px rgba(22, 33, 47, .26);
+    }
+    .route-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .route-timeline {
+      background: #fbf9f4;
+      border: 1px solid #ece3d7;
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 380px;
+    }
+    .route-timeline-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .route-timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 332px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .route-point-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid #e8dfd2;
+      border-radius: 10px;
+      background: #fff;
+      padding: 9px 10px;
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+    .route-point-btn:hover {
+      border-color: #c4b8a6;
+      transform: translateY(-1px);
+    }
+    .route-point-btn.active {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(31, 94, 122, .16);
+      background: #f4fbff;
+    }
+    .route-point-time {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #4c5b6a;
+      margin-bottom: 3px;
+    }
+    .route-point-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #203244;
+      line-height: 1.35;
+    }
+    .hotel-pin {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #f59e0b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.22);
+    }
+
     @media (max-width: 600px) {
       .hero { padding: 40px 16px 60px; }
       .container { padding: 0 14px; }
@@ -846,6 +972,10 @@
       .tl-time { width: 56px; font-size: 12px; }
       .tl-title { font-size: 14px; }
       .checkin-fab { right: 16px; bottom: 16px; width: 58px; height: 58px; }
+      .route-layout { grid-template-columns: 1fr; }
+      #guideRouteMap { height: 300px; }
+      .route-timeline { min-height: 280px; }
+      .route-timeline-list { max-height: 220px; }
     }
   </style>
 </head>
@@ -961,6 +1091,27 @@
           <li>步行可达小印度、甘榜格南（阿拉伯区）等特色街区</li>
           <li>距滨海湾金沙约3公里，地铁15分钟可达</li>
         </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ 攻略路线地图 ════════ -->
+  <div class="section-header">
+    <div class="section-icon">🗺️</div>
+    <h2>攻略路线图</h2>
+  </div>
+  <div class="route-map-card">
+    <div class="route-legend" id="guideRouteLegend">
+      <button class="route-chip active" data-day="1"><span class="route-dot" style="background:#4f46e5;"></span>Day 1 抵达线</button>
+      <button class="route-chip" data-day="2"><span class="route-dot" style="background:#e11d48;"></span>Day 2 文化街区</button>
+      <button class="route-chip" data-day="3"><span class="route-dot" style="background:#d97706;"></span>Day 3 乌节路与滨海湾</button>
+      <button class="route-chip" data-day="4"><span class="route-dot" style="background:#0f766e;"></span>Day 4 牛车水返程</button>
+    </div>
+    <div class="route-layout">
+    <div id="guideRouteMap"></div>
+      <div class="route-timeline">
+        <div class="route-timeline-title" id="guideTimelineTitle">Day 1 路线时间轴</div>
+        <div class="route-timeline-list" id="guideTimelineList"></div>
       </div>
     </div>
   </div>
@@ -1688,9 +1839,6 @@ function init() {
   }, 60000);
 }
 
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', init);
-
 // ════════ 可折叠内容（互斥展开） ════════
 function toggleCollapse(id) {
   const content = document.getElementById(id);
@@ -1715,8 +1863,182 @@ function switchTab(name) {
   document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   document.getElementById('page-' + name).classList.add('active');
+  if (name === 'guide' && guideMap) {
+    setTimeout(function() { guideMap.invalidateSize(); }, 100);
+  }
   if (name === 'checkin' && map) {
     setTimeout(function() { map.invalidateSize(); }, 100);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  GUIDE ROUTE MAP
+// ═══════════════════════════════════════════════════════
+var guideMap = null;
+var guideRouteLayersByDay = {};
+var guidePointRefsByDay = {};
+var activeGuideDay = 1;
+var guideRouteData = {
+  1: {
+    color: '#4f46e5',
+    title: 'Day 1 抵达线',
+    points: [
+      { time: '00:45', name: '樟宜机场 T1', lat: 1.3644, lng: 103.9915, hotel: false },
+      { time: '02:00', name: 'Hotel Mi Rochor（入住）', lat: 1.3036, lng: 103.8524, hotel: true }
+    ]
+  },
+  2: {
+    color: '#e11d48',
+    title: 'Day 2 文化街区',
+    points: [
+      { time: '09:00', name: 'Hotel Mi Rochor（出发）', lat: 1.3036, lng: 103.8524, hotel: true },
+      { time: '09:20', name: '亚坤咖椰吐司（武吉士）', lat: 1.3002, lng: 103.8604, hotel: false },
+      { time: '10:00', name: '甘榜格南', lat: 1.3003, lng: 103.8623, hotel: false },
+      { time: '10:30', name: '哈芝巷', lat: 1.3005, lng: 103.8601, hotel: false },
+      { time: '11:30', name: '阿拉伯街', lat: 1.3010, lng: 103.8594, hotel: false },
+      { time: '14:30', name: '小印度', lat: 1.3063, lng: 103.8520, hotel: false },
+      { time: '20:30', name: '武吉士夜市', lat: 1.3002, lng: 103.8595, hotel: false },
+      { time: '22:00', name: 'Hotel Mi Rochor（回到酒店）', lat: 1.3036, lng: 103.8524, hotel: true }
+    ]
+  },
+  3: {
+    color: '#d97706',
+    title: 'Day 3 乌节路与滨海湾',
+    points: [
+      { time: '09:00', name: 'Hotel Mi Rochor（出发）', lat: 1.3036, lng: 103.8524, hotel: true },
+      { time: '11:00', name: '乌节路（老友记展）', lat: 1.3045, lng: 103.8335, hotel: false },
+      { time: '12:30', name: 'ION Orchard', lat: 1.3042, lng: 103.8328, hotel: false },
+      { time: '18:30', name: '松发肉骨茶', lat: 1.2907, lng: 103.8464, hotel: false },
+      { time: '20:00', name: '滨海湾金沙', lat: 1.2838, lng: 103.8600, hotel: false },
+      { time: '21:30', name: '滨海湾花园', lat: 1.2816, lng: 103.8636, hotel: false },
+      { time: '22:30', name: 'Hotel Mi Rochor（回到酒店）', lat: 1.3036, lng: 103.8524, hotel: true }
+    ]
+  },
+  4: {
+    color: '#0f766e',
+    title: 'Day 4 牛车水返程',
+    points: [
+      { time: '08:30', name: 'Hotel Mi Rochor（出发）', lat: 1.3036, lng: 103.8524, hotel: true },
+      { time: '09:30', name: '牛车水', lat: 1.2833, lng: 103.8443, hotel: false },
+      { time: '11:00', name: '老巴刹', lat: 1.2822, lng: 103.8514, hotel: false },
+      { time: '13:00', name: '樟宜机场', lat: 1.3644, lng: 103.9915, hotel: false }
+    ]
+  }
+};
+
+function initGuideRouteMap() {
+  var el = document.getElementById('guideRouteMap');
+  if (!el || typeof L === 'undefined') return;
+  guideMap = L.map('guideRouteMap', { zoomControl: true }).setView([1.296, 103.852], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM' }).addTo(guideMap);
+
+  Object.keys(guideRouteData).forEach(function(dayKey) {
+    var day = guideRouteData[dayKey];
+    var latlngs = day.points.map(function(p) { return [p.lat, p.lng]; });
+    guideRouteLayersByDay[dayKey] = [];
+    guidePointRefsByDay[dayKey] = [];
+    day.points.forEach(function(p, idx) {
+      var marker;
+      if (p.hotel) {
+        marker = L.marker([p.lat, p.lng], {
+          icon: L.divIcon({
+            className: '',
+            html: '<div class="hotel-pin">🏨</div>',
+            iconSize: [26, 26],
+            iconAnchor: [13, 13]
+          })
+        }).addTo(guideMap);
+      } else {
+        marker = L.circleMarker([p.lat, p.lng], {
+          radius: 7,
+          color: '#ffffff',
+          weight: 2,
+          fillColor: day.color,
+          fillOpacity: 0.95
+        }).addTo(guideMap);
+      }
+      marker.bindPopup('<b>Day ' + dayKey + ' · ' + (idx + 1) + '</b><br>' + p.time + ' · ' + p.name);
+      marker.on('click', function() {
+        setActiveGuidePoint(dayKey, idx, true);
+      });
+      guideRouteLayersByDay[dayKey].push(marker);
+      guidePointRefsByDay[dayKey].push({ marker: marker, idx: idx });
+    });
+    var line = L.polyline(latlngs, {
+      color: day.color,
+      weight: 4,
+      opacity: 0.82,
+      dashArray: dayKey === '1' ? '8,6' : null
+    }).addTo(guideMap);
+    guideRouteLayersByDay[dayKey].push(line);
+  });
+
+  document.querySelectorAll('#guideRouteLegend .route-chip').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var day = parseInt(btn.dataset.day, 10);
+      selectGuideDay(day);
+    });
+  });
+  selectGuideDay(1);
+}
+
+function selectGuideDay(dayNum) {
+  activeGuideDay = dayNum;
+  document.querySelectorAll('#guideRouteLegend .route-chip').forEach(function(btn) {
+    btn.classList.toggle('active', parseInt(btn.dataset.day, 10) === dayNum);
+  });
+  Object.keys(guideRouteLayersByDay).forEach(function(dayKey) {
+    var visible = parseInt(dayKey, 10) === dayNum;
+    guideRouteLayersByDay[dayKey].forEach(function(layer) {
+      if (visible) {
+        if (!guideMap.hasLayer(layer)) layer.addTo(guideMap);
+      } else if (guideMap.hasLayer(layer)) {
+        guideMap.removeLayer(layer);
+      }
+    });
+  });
+  renderGuideTimeline(dayNum);
+  zoomGuideDay(dayNum);
+  setActiveGuidePoint(dayNum, 0, false);
+}
+
+function zoomGuideDay(dayNum) {
+  var points = guideRouteData[dayNum].points.map(function(p) { return [p.lat, p.lng]; });
+  if (points.length) guideMap.fitBounds(points, { padding: [24, 24] });
+}
+
+function renderGuideTimeline(dayNum) {
+  var day = guideRouteData[dayNum];
+  var titleEl = document.getElementById('guideTimelineTitle');
+  var listEl = document.getElementById('guideTimelineList');
+  if (!day || !titleEl || !listEl) return;
+  titleEl.textContent = day.title + ' 时间轴';
+  listEl.innerHTML = day.points.map(function(p, idx) {
+    return '<button class="route-point-btn" data-day="' + dayNum + '" data-idx="' + idx + '">' +
+      '<span class="route-point-time">' + p.time + '</span>' +
+      '<span class="route-point-name">' + (p.hotel ? '🏨 ' : '') + p.name + '</span>' +
+    '</button>';
+  }).join('');
+  listEl.querySelectorAll('.route-point-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setActiveGuidePoint(dayNum, parseInt(btn.dataset.idx, 10), true);
+    });
+  });
+}
+
+function setActiveGuidePoint(dayNum, idx, panMap) {
+  if (activeGuideDay !== dayNum) return;
+  var listEl = document.getElementById('guideTimelineList');
+  if (listEl) {
+    listEl.querySelectorAll('.route-point-btn').forEach(function(btn) {
+      btn.classList.toggle('active', parseInt(btn.dataset.idx, 10) === idx);
+    });
+  }
+  var pointRef = guidePointRefsByDay[dayNum] && guidePointRefsByDay[dayNum][idx];
+  if (!pointRef) return;
+  if (panMap) {
+    guideMap.panTo(pointRef.marker.getLatLng(), { animate: true });
+    pointRef.marker.openPopup();
   }
 }
 
@@ -2017,6 +2339,7 @@ async function ciExportPDF() {
 
 document.addEventListener('DOMContentLoaded', function() {
   init();
+  initGuideRouteMap();
   renderCiLocationGrid();
   ciLoadCheckins();
   ciGetLocation();
