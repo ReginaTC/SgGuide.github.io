@@ -2478,6 +2478,7 @@ if (typeof window.L === 'undefined') {
 }
 </script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
@@ -2491,6 +2492,14 @@ var firebaseConfig = {
   appId: "1:805691422387:web:08113ab0fcb881ff93a2c6"
 };
 firebase.initializeApp(firebaseConfig);
+firebase.auth().signInAnonymously().catch(function(err) {
+  console.error('Anonymous auth failed:', err);
+  setTimeout(function() {
+    if (typeof ciToast === 'function') {
+      ciToast('登录失败：请稍后重试或检查 Firebase Auth 配置');
+    }
+  }, 800);
+});
 var db = firebase.database();
 var checkinsRef = db.ref('sg-trip-2026/checkins');
 </script>
