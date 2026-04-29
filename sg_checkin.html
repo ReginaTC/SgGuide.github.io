@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新加坡打卡 · SG 2026</title>
+
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+
+  <!-- html2pdf -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #E74C3C;
+      --secondary: #3498DB;
+      --success: #27AE60;
+      --warning: #F39C12;
+      --dark: #2C3E50;
+      --light: #ECF0F1;
+      --card: #FFFFFF;
+      --bg: #F8F9FA;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* Nav */
+    .nav {
+      position: sticky;
+      top: 0;
+      background: white;
+      display: flex;
+      border-bottom: 1px solid #e0e0e0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 14px 0;
+      border: none;
+      background: none;
+      font-size: 15px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    .nav-btn .emoji { font-size: 20px; display: block; margin-bottom: 2px; }
+
+    /* Page sections */
+    .page { display: none; padding: 16px; max-width: 600px; margin: 0 auto; }
+    .page.active { display: block; }
+
+    /* Trip Header */
+    .trip-header {
+      background: linear-gradient(135deg, var(--primary), #C0392B);
+      color: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .trip-header h1 { font-size: 22px; margin-bottom: 6px; }
+    .trip-header p { font-size: 13px; opacity: 0.9; }
+    .trip-stats {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 16px;
+    }
+    .trip-stat { text-align: center; }
+    .trip-stat .num { font-size: 28px; font-weight: 800; }
+    .trip-stat .label { font-size: 11px; opacity: 0.8; }
+
+    /* Check-in Button */
+    .checkin-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-size: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(231,76,60,0.5);
+      z-index: 200;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .checkin-fab:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(231,76,60,0.6); }
+    .checkin-fab:active { transform: scale(0.95); }
+
+    /* Check-in Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 300;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    /* Location selector */
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .loc-btn {
+      padding: 10px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      background: white;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .loc-btn.selected {
+      border-color: var(--primary);
+      background: #FDF2F2;
+    }
+    .loc-btn .loc-name { font-weight: 600; display: block; }
+    .loc-btn .loc-day { font-size: 11px; color: #888; }
+
+    /* Photo area */
+    .photo-area {
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      margin-bottom: 16px;
+      overflow: hidden;
+      position: relative;
+      background: #fafafa;
+    }
+    .photo-area:hover { border-color: var(--primary); background: #fdf2f2; }
+    .photo-area.has-photo { border-style: solid; border-color: var(--success); }
+    .photo-area img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-area .hint { color: #aaa; font-size: 13px; }
+    .photo-area .hint .icon { font-size: 32px; display: block; margin-bottom: 4px; }
+    .photo-actions { display: none; gap: 8px; }
+    .photo-area.has-photo .hint,
+    .photo-area.has-photo .photo-actions { display: none; }
+    .photo-area.has-photo .photo-actions { display: flex; }
+    .photo-action-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .photo-action-btn.retake { background: #f0f0f0; color: #333; }
+    .photo-action-btn.remove { background: #fdd; color: var(--primary); }
+
+    /* Text input */
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #555;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { outline: none; border-color: var(--primary); }
+
+    /* User selector */
+    .user-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .user-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      background: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .user-btn.selected { border-color: var(--secondary); background: #EBF5FB; color: var(--secondary); }
+    .user-btn .user-icon { font-size: 24px; display: block; margin-bottom: 2px; }
+
+    /* Location status */
+    .location-status {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .location-status.loading { background: #FEF9E7; color: #B7950B; }
+    .location-status.success { background: #E9F7EF; color: var(--success); }
+    .location-status.error { background: #FDEDEC; color: var(--primary); }
+
+    /* Submit button */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+    .submit-btn.syncing { background: var(--warning); }
+
+    /* Check-in list */
+    .checkin-list { margin-top: 8px; }
+    .checkin-item {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .checkin-item .item-user { font-size: 28px; flex-shrink: 0; }
+    .checkin-item .item-body { flex: 1; }
+    .checkin-item .item-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .checkin-item .item-meta { font-size: 11px; color: #888; display: flex; gap: 8px; flex-wrap: wrap; }
+    .checkin-item .item-note { font-size: 13px; color: #555; margin-top: 6px; padding: 8px; background: #f9f9f9; border-radius: 8px; }
+    .checkin-item .item-photo { margin-top: 8px; border-radius: 10px; overflow: hidden; }
+    .checkin-item .item-photo img { width: 100%; border-radius: 10px; display: block; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    /* Report page */
+    .report-section {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .report-section h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Map */
+    #reportMap {
+      height: 280px;
+      border-radius: 12px;
+      z-index: 1;
+    }
+
+    /* Photo wall */
+    .photo-wall {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+    .photo-wall .photo-thumb {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .photo-wall .photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s;
+    }
+    .photo-wall .photo-thumb:hover img { transform: scale(1.1); }
+
+    /* Timeline in report */
+    .report-timeline { position: relative; }
+    .report-timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      border-radius: 1px;
+    }
+    .report-tl-item {
+      padding-left: 40px;
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .report-tl-item::before {
+      content: attr(data-day);
+      position: absolute;
+      left: 4px;
+      top: 0;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .report-tl-item .rti-time { font-size: 11px; color: #888; margin-bottom: 2px; }
+    .report-tl-item .rti-name { font-size: 14px; font-weight: 600; }
+    .report-tl-item .rti-user { font-size: 11px; color: var(--secondary); }
+    .report-tl-item .rti-photo {
+      margin-top: 6px;
+      border-radius: 8px;
+      overflow: hidden;
+      max-width: 200px;
+    }
+    .report-tl-item .rti-photo img { width: 100%; border-radius: 8px; display: block; }
+
+    /* Stats cards */
+    .stats-row { display: flex; gap: 10px; }
+    .stat-card {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-card .sc-num { font-size: 24px; font-weight: 800; color: var(--primary); }
+    .stat-card .sc-label { font-size: 11px; color: #888; margin-top: 2px; }
+
+    /* Day filter */
+    .day-filter {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .day-filter .filter-btn {
+      flex-shrink: 0;
+      padding: 6px 12px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 20px;
+      background: white;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .day-filter .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* PDF button */
+    .export-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--dark);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .export-btn:hover { background: #1a252f; }
+
+    /* Photo lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 30px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Loading overlay */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.9);
+      z-index: 400;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .loading-overlay.show { display: flex; }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f0f0f0;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--dark);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 600;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Sync indicator */
+    .sync-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #ccc;
+      border-radius: 50%;
+      margin-left: 8px;
+    }
+    .sync-dot.connected { background: var(--success); }
+
+    /* Hidden for PDF */
+    .no-print { }
+
+    @media print {
+      .nav, .checkin-fab, .export-btn, .day-filter { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav no-print">
+  <button class="nav-btn active" onclick="switchPage('checkin')">
+    <span class="emoji">📍</span>
+    打卡
+  </button>
+  <button class="nav-btn" onclick="switchPage('report')">
+    <span class="emoji">📊</span>
+    报告
+  </button>
+</nav>
+
+<!-- ═══════ CHECK-IN PAGE ═══════ -->
+<div id="page-checkin" class="page active">
+  <div class="trip-header">
+    <h1>🇸🇬 新加坡 2026</h1>
+    <p>5月1日 – 5月4日 · 两人同行</p>
+    <div class="trip-stats">
+      <div class="trip-stat">
+        <div class="num" id="stat-checkins">0</div>
+        <div class="label">打卡次数</div>
+      </div>
+      <div class="trip-stat">
+        <div class="num" id="stat-photos">0</div>
+        <div class="label">照片</div>
+      </div>
+      <div class="trip-stat">
+        <div class="num" id="stat-users">0</div>
+        <div class="label">同行人</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="checkin-list" id="checkinList">
+    <div class="empty-state" id="emptyState">
+      <div class="icon">📸</div>
+      <p>还没有打卡记录</p>
+      <p>点击右下角按钮，开始你的第一个打卡！</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ REPORT PAGE ═══════ -->
+<div id="page-report" class="page">
+  <div class="trip-header" style="margin-bottom:16px;">
+    <h1>📊 旅行报告</h1>
+    <p>新加坡 2026 · 5月1日–4日</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="report-section">
+    <h2>📈 数据统计</h2>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="sc-num" id="r-stat-checkins">0</div>
+        <div class="sc-label">打卡次数</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num" id="r-stat-photos">0</div>
+        <div class="sc-label">照片</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num" id="r-stat-days">0</div>
+        <div class="sc-label">打卡天数</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map -->
+  <div class="report-section">
+    <h2>🗺️ 打卡轨迹</h2>
+    <div id="reportMap"></div>
+  </div>
+
+  <!-- Photo Wall -->
+  <div class="report-section">
+    <h2>📸 照片墙</h2>
+    <div class="photo-wall" id="photoWall">
+      <div class="empty-state">
+        <div class="icon">🖼️</div>
+        <p>还没有照片</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="report-section">
+    <h2>⏱️ 打卡时间轴</h2>
+    <div class="day-filter no-print" id="dayFilter">
+      <button class="filter-btn active" onclick="filterDay('all')">全部</button>
+      <button class="filter-btn" onclick="filterDay('2')">Day 2</button>
+      <button class="filter-btn" onclick="filterDay('3')">Day 3</button>
+      <button class="filter-btn" onclick="filterDay('4')">Day 4</button>
+    </div>
+    <div class="report-timeline" id="reportTimeline">
+      <div class="empty-state">
+        <div class="icon">⏰</div>
+        <p>还没有打卡记录</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export -->
+  <button class="export-btn no-print" onclick="exportPDF()">
+    📄 导出 PDF 报告
+  </button>
+  <div style="height:40px;"></div>
+</div>
+
+<!-- ═══════ FAB BUTTON ═══════ -->
+<button class="checkin-fab no-print" onclick="openModal()">+</button>
+
+<!-- ═══════ CHECK-IN MODAL ═══════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📍 新打卡</div>
+
+    <!-- User selector -->
+    <div class="user-selector">
+      <button class="user-btn selected" id="user1Btn" onclick="selectUser(1)">
+        <span class="user-icon">👩</span>
+        Regina
+      </button>
+      <button class="user-btn" id="user2Btn" onclick="selectUser(2)">
+        <span class="user-icon">👨</span>
+        同行人
+      </button>
+    </div>
+
+    <!-- Location selector -->
+    <div class="form-group">
+      <label>📍 打卡地点</label>
+      <div class="location-grid" id="locationGrid"></div>
+    </div>
+
+    <!-- Photo -->
+    <div class="form-group">
+      <label>📷 照片（可选）</label>
+      <div class="photo-area" id="photoArea" onclick="triggerPhotoInput()">
+        <div class="hint">
+          <span class="icon">📷</span>
+          点击拍照或从相册选择
+        </div>
+        <div class="photo-actions">
+          <button class="photo-action-btn retake" onclick="event.stopPropagation();triggerPhotoInput()">重新拍照</button>
+          <button class="photo-action-btn remove" onclick="event.stopPropagation();removePhoto()">删除</button>
+        </div>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto(this.files[0])">
+    </div>
+
+    <!-- Note -->
+    <div class="form-group">
+      <label>📝 备注（可选）</label>
+      <textarea id="noteInput" rows="2" placeholder="这一刻想说什么..."></textarea>
+    </div>
+
+    <!-- Location status -->
+    <div class="location-status loading" id="locationStatus">
+      <span id="locationSpinner">⏳</span>
+      <span id="locationText">正在获取位置...</span>
+    </div>
+
+    <!-- Submit -->
+    <button class="submit-btn" id="submitBtn" onclick="submitCheckin()">
+      ✈️ 打卡
+    </button>
+    <button class="submit-btn" style="background:#888;margin-top:8px;" onclick="closeModal()">取消</button>
+  </div>
+</div>
+
+<!-- ═══════ LIGHTBOX ═══════ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- ═══════ LOADING ═══════ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <span id="loadingText">正在生成报告...</span>
+</div>
+
+<!-- ═══════ TOAST ═══════ -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════ FIREBASE CONFIG ═══════
+const firebaseConfig = {
+  apiKey: "AIzaSyC1CwK-QEIyEVv8wshx7ERFXPz9R6NqoSg",
+  authDomain: "sg-trip-2026.firebaseapp.com",
+  databaseURL: "https://sg-trip-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "sg-trip-2026",
+  storageBucket: "sg-trip-2026.firebasestorage.app",
+  messagingSenderId: "805691422387",
+  appId: "1:805691422387:web:08113ab0fcb881ff93a2c6"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const checkinsRef = db.ref('sg-trip-2026/checkins');
+
+// ═══════ LOCATION DATA ═══════
+const allLocations = [
+  // Day 2
+  { id: 'd2-yakun', name: '亚坤咖椰吐司', day: 2, lat: 1.3002, lng: 103.8604 },
+  { id: 'd2-kampong', name: '甘榜格南·苏丹清真寺', day: 2, lat: 1.3003, lng: 103.8623 },
+  { id: 'd2-haji', name: '哈芝巷', day: 2, lat: 1.3005, lng: 103.8601 },
+  { id: 'd2-zamzam', name: 'Zam Zam Restaurant', day: 2, lat: 1.3010, lng: 103.8593 },
+  { id: 'd2-littleindia', name: '小印度', day: 2, lat: 1.3063, lng: 103.8520 },
+  { id: 'd2-seafood', name: '辣椒螃蟹', day: 2, lat: 1.3044, lng: 103.8602 },
+  { id: 'd2-bugis', name: '武吉士夜市', day: 2, lat: 1.3002, lng: 103.8595 },
+  // Day 3
+  { id: 'd3-friends', name: '老友记展览', day: 3, lat: 1.3045, lng: 103.8335 },
+  { id: 'd3-ion', name: 'ION Orchard', day: 3, lat: 1.3042, lng: 103.8328 },
+  { id: 'd3-orchard', name: '乌节路', day: 3, lat: 1.3041, lng: 103.8318 },
+  { id: 'd3-songfa', name: '松发肉骨茶', day: 3, lat: 1.2907, lng: 103.8464 },
+  { id: 'd3-mbs', name: '滨海湾金沙', day: 3, lat: 1.2838, lng: 103.8600 },
+  { id: 'd3-gardens', name: '滨海湾花园', day: 3, lat: 1.2816, lng: 103.8636 },
+  // Day 4
+  { id: 'd4-killiney', name: 'Killiney Kopitiam', day: 4, lat: 1.3008, lng: 103.8384 },
+  { id: 'd4-chinatown', name: '牛车水', day: 4, lat: 1.2833, lng: 103.8443 },
+  { id: 'd4-lau', name: '老巴刹', day: 4, lat: 1.2822, lng: 103.8514 },
+];
+
+// ═══════ STATE ═══════
+let currentUser = 1;
+let currentLocation = null;
+let currentPosition = null;
+let photoDataUrl = null;
+let allCheckins = [];
+let map = null;
+let markers = [];
+let currentDayFilter = 'all';
+
+// ═══════ INIT ═══════
+function init() {
+  renderLocationGrid();
+  loadCheckins();
+  getLocation();
+  initMap();
+}
+
+// ═══════ LOCATION GRID ═══════
+function renderLocationGrid() {
+  const grid = document.getElementById('locationGrid');
+  const days = { 2: 'Day 2', 3: 'Day 3', 4: 'Day 4' };
+  grid.innerHTML = allLocations.map(loc => `
+    <button class="loc-btn" data-id="${loc.id}" onclick="selectLocation('${loc.id}')">
+      <span class="loc-name">${loc.name}</span>
+      <span class="loc-day">${days[loc.day]}</span>
+    </button>
+  `).join('');
+}
+
+function selectLocation(id) {
+  currentLocation = allLocations.find(l => l.id === id);
+  document.querySelectorAll('.loc-btn').forEach(b => b.classList.toggle('selected', b.dataset.id === id));
+}
+
+// ═══════ GPS ═══════
+function getLocation() {
+  const statusEl = document.getElementById('locationStatus');
+  const spinnerEl = document.getElementById('locationSpinner');
+  const textEl = document.getElementById('locationText');
+
+  if (!navigator.geolocation) {
+    statusEl.className = 'location-status error';
+    spinnerEl.textContent = '❌';
+    textEl.textContent = '浏览器不支持定位';
+    return;
+  }
+
+  statusEl.className = 'location-status loading';
+  spinnerEl.textContent = '⏳';
+  textEl.textContent = '正在获取位置...';
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      currentPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      statusEl.className = 'location-status success';
+      spinnerEl.textContent = '✅';
+      textEl.textContent = `已获取位置：${currentPosition.lat.toFixed(4)}, ${currentPosition.lng.toFixed(4)}`;
+    },
+    (err) => {
+      statusEl.className = 'location-status error';
+      spinnerEl.textContent = '⚠️';
+      textEl.textContent = '无法获取GPS，可用预设地点打卡';
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+// ═══════ USER SELECT ═══════
+function selectUser(num) {
+  currentUser = num;
+  document.getElementById('user1Btn').classList.toggle('selected', num === 1);
+  document.getElementById('user2Btn').classList.toggle('selected', num === 2);
+}
+
+// ═══════ PHOTO ═══════
+function triggerPhotoInput() {
+  document.getElementById('photoInput').click();
+}
+
+function handlePhoto(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    photoDataUrl = e.target.result;
+    const area = document.getElementById('photoArea');
+    area.classList.add('has-photo');
+    area.innerHTML = `
+      <img src="${photoDataUrl}" alt="photo">
+      <div class="photo-actions">
+        <button class="photo-action-btn retake" onclick="event.stopPropagation();triggerPhotoInput()">重新拍照</button>
+        <button class="photo-action-btn remove" onclick="event.stopPropagation();removePhoto()">删除</button>
+      </div>
+    `;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+  photoDataUrl = null;
+  const area = document.getElementById('photoArea');
+  area.classList.remove('has-photo');
+  area.innerHTML = `
+    <div class="hint"><span class="icon">📷</span>点击拍照或从相册选择</div>
+    <div class="photo-actions">
+      <button class="photo-action-btn retake" onclick="event.stopPropagation();triggerPhotoInput()">重新拍照</button>
+      <button class="photo-action-btn remove" onclick="event.stopPropagation();removePhoto()">删除</button>
+    </div>
+  `;
+  document.getElementById('photoInput').value = '';
+}
+
+// ═══════ MODAL ═══════
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('open');
+  getLocation();
+  // Reset
+  document.getElementById('noteInput').value = '';
+  removePhoto();
+  currentLocation = null;
+  document.querySelectorAll('.loc-btn').forEach(b => b.classList.remove('selected'));
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+// ═══════ SUBMIT ═══════
+async function submitCheckin() {
+  if (!currentLocation) {
+    showToast('请先选择一个打卡地点 📍');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.classList.add('syncing');
+  btn.textContent = '⏳ 同步中...';
+
+  try {
+    // Upload photo to ImgBB
+    let photoUrl = null;
+    if (photoDataUrl) {
+      const formData = new FormData();
+      formData.append('image', photoDataUrl.split(',')[1]);
+      // Using free ImgBB API (anonymous upload)
+      const resp = await fetch('https://api.imgbb.com/1/upload?key=6d6ab71ef12da2b88db0999f4c69a2c3', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await resp.json();
+      if (data.success) {
+        photoUrl = data.data.url;
+      }
+    }
+
+    const checkin = {
+      user: currentUser,
+      locationId: currentLocation.id,
+      locationName: currentLocation.name,
+      lat: currentPosition ? currentPosition.lat : currentLocation.lat,
+      lng: currentPosition ? currentPosition.lng : currentLocation.lng,
+      day: currentLocation.day,
+      photoUrl: photoUrl,
+      note: document.getElementById('noteInput').value.trim(),
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    await checkinsRef.push(checkin);
+
+    closeModal();
+    showToast('打卡成功！✨');
+  } catch (err) {
+    console.error(err);
+    showToast('同步失败，请重试 😅');
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('syncing');
+    btn.textContent = '✈️ 打卡';
+  }
+}
+
+// ═══════ FIREBASE LISTEN ═══════
+function loadCheckins() {
+  checkinsRef.orderByChild('timestamp').on('value', (snapshot) => {
+    allCheckins = [];
+    snapshot.forEach(child => {
+      allCheckins.unshift({ key: child.key, ...child.val() });
+    });
+    renderCheckins();
+    updateStats();
+    renderReport();
+  });
+}
+
+// ═══════ RENDER CHECKINS ═══════
+function renderCheckins() {
+  const list = document.getElementById('checkinList');
+  const empty = document.getElementById('emptyState');
+
+  if (allCheckins.length === 0) {
+    empty.style.display = '';
+    list.innerHTML = '';
+    list.appendChild(empty);
+    return;
+  }
+
+  empty.style.display = 'none';
+  list.innerHTML = allCheckins.map(c => {
+    const time = new Date(c.timestamp).toLocaleString('zh-CN', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' });
+    const userEmoji = c.user === 1 ? '👩' : '👨';
+    return `
+      <div class="checkin-item">
+        <div class="item-user">${userEmoji}</div>
+        <div class="item-body">
+          <div class="item-name">📍 ${c.locationName}</div>
+          <div class="item-meta">
+            <span>📅 Day ${c.day}</span>
+            <span>🕐 ${time}</span>
+          </div>
+          ${c.note ? `<div class="item-note">${c.note}</div>` : ''}
+          ${c.photoUrl ? `<div class="item-photo"><img src="${c.photoUrl}" alt="photo" onclick="openLightbox('${c.photoUrl}')"></div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ═══════ STATS ═══════
+function updateStats() {
+  const photos = allCheckins.filter(c => c.photoUrl).length;
+  const users = new Set(allCheckins.map(c => c.user)).size;
+  document.getElementById('stat-checkins').textContent = allCheckins.length;
+  document.getElementById('stat-photos').textContent = photos;
+  document.getElementById('stat-users').textContent = users;
+}
+
+// ═══════ PAGE SWITCH ═══════
+function switchPage(name) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+
+  if (name === 'report') {
+    renderReport();
+    setTimeout(() => {
+      if (map) map.invalidateSize();
+    }, 100);
+  }
+}
+
+// ═══════ MAP ═══════
+function initMap() {
+  map = L.map('reportMap').setView([1.29, 103.85], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+}
+
+function renderMap() {
+  if (!map) return;
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+
+  const filtered = currentDayFilter === 'all'
+    ? allCheckins
+    : allCheckins.filter(c => c.day == currentDayFilter);
+
+  if (filtered.length === 0) return;
+
+  const userIcons = ['👩', '👨'];
+  filtered.forEach(c => {
+    const icon = L.divIcon({
+      html: `<div style="background:${c.user===1?'#E74C3C':'#3498DB'};color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);">${userIcons[c.user-1]}</div>`,
+      className: '',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    });
+    const marker = L.marker([c.lat, c.lng], { icon }).addTo(map);
+    marker.bindPopup(`<b>${c.locationName}</b><br>${c.note || ''}`);
+    markers.push(marker);
+  });
+
+  // Draw path
+  if (filtered.length > 1) {
+    const coords = filtered.map(c => [c.lat, c.lng]);
+    L.polyline(coords, { color: '#E74C3C', weight: 3, opacity: 0.6, dashArray: '8,6' }).addTo(map);
+  }
+
+  // Fit bounds
+  const lats = filtered.map(c => c.lat);
+  const lngs = filtered.map(c => c.lng);
+  map.fitBounds([[Math.min(...lats), Math.min(...lngs)], [Math.max(...lats), Math.max(...lngs)]], { padding: [30, 30] });
+}
+
+// ═══════ PHOTO WALL ═══════
+function renderPhotoWall() {
+  const wall = document.getElementById('photoWall');
+  const photos = allCheckins.filter(c => c.photoUrl);
+
+  if (photos.length === 0) {
+    wall.innerHTML = `<div class="empty-state"><div class="icon">🖼️</div><p>还没有照片</p></div>`;
+    return;
+  }
+
+  wall.innerHTML = photos.map(p => `
+    <div class="photo-thumb" onclick="openLightbox('${p.photoUrl}')">
+      <img src="${p.photoUrl}" alt="photo">
+    </div>
+  `).join('');
+}
+
+// ═══════ REPORT TIMELINE ═══════
+function renderTimeline() {
+  const tl = document.getElementById('reportTimeline');
+  const filtered = currentDayFilter === 'all'
+    ? allCheckins
+    : allCheckins.filter(c => c.day == currentDayFilter);
+
+  if (filtered.length === 0) {
+    tl.innerHTML = `<div class="empty-state"><div class="icon">⏰</div><p>还没有打卡记录</p></div>`;
+    return;
+  }
+
+  const userNames = ['', 'Regina', '同行人'];
+  tl.innerHTML = filtered.map(c => {
+    const time = new Date(c.timestamp).toLocaleString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+    return `
+      <div class="report-tl-item" data-day="D${c.day}">
+        <div class="rti-time">${time} · Day ${c.day}</div>
+        <div class="rti-name">📍 ${c.locationName}</div>
+        <div class="rti-user">${userNames[c.user]}</div>
+        ${c.note ? `<div class="rti-note" style="font-size:12px;color:#666;margin-top:4px;">${c.note}</div>` : ''}
+        ${c.photoUrl ? `<div class="rti-photo"><img src="${c.photoUrl}" alt="photo" onclick="openLightbox('${c.photoUrl}')"></div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// ═══════ DAY FILTER ═══════
+function filterDay(day) {
+  currentDayFilter = day;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.includes(day === 'all' ? '全部' : `Day ${day}`));
+  });
+  renderMap();
+  renderTimeline();
+}
+
+// ═══════ RENDER FULL REPORT ═══════
+function renderReport() {
+  const photos = allCheckins.filter(c => c.photoUrl).length;
+  const days = new Set(allCheckins.map(c => c.day)).size;
+
+  document.getElementById('r-stat-checkins').textContent = allCheckins.length;
+  document.getElementById('r-stat-photos').textContent = photos;
+  document.getElementById('r-stat-days').textContent = Math.max(days, allCheckins.length > 0 ? 1 : 0);
+
+  renderMap();
+  renderPhotoWall();
+  renderTimeline();
+}
+
+// ═══════ PDF EXPORT ═══════
+async function exportPDF() {
+  const overlay = document.getElementById('loadingOverlay');
+  const loadingText = document.getElementById('loadingText');
+  overlay.classList.add('show');
+  loadingText.textContent = '正在生成 PDF...';
+
+  try {
+    // Switch to all day filter for PDF
+    const prevFilter = currentDayFilter;
+    currentDayFilter = 'all';
+    renderMap();
+    renderTimeline();
+
+    await new Promise(r => setTimeout(r, 300));
+
+    const element = document.getElementById('page-report');
+    const opt = {
+      margin: 10,
+      filename: '新加坡旅行报告_2026.pdf',
+      image: { type: 'jpeg', quality: 0.85 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    await html2pdf().set(opt).from(element).save();
+    showToast('PDF 已下载！📄');
+  } catch (err) {
+    console.error(err);
+    showToast('导出失败 😅');
+  } finally {
+    overlay.classList.remove('show');
+    currentDayFilter = prevFilter;
+    renderMap();
+    renderTimeline();
+  }
+}
+
+// ═══════ LIGHTBOX ═══════
+function openLightbox(url) {
+  document.getElementById('lightboxImg').src = url;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// ═══════ TOAST ═══════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════ INIT ═══════
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🇸🇬 新加坡旅行攻略 · 5月1日–4日</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #db3a34;
+      --orange: #ef8f35;
+      --yellow: #f2c14e;
+      --green: #18a999;
+      --blue: #1f5e7a;
+      --navy: #16212f;
+      --light: #faf7f2;
+      --card-bg: #ffffff;
+      --text: #1f2a37;
+      --muted: #5d6976;
+      --border: #e7dfd3;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-soft: 0 10px 28px rgba(6, 31, 53, 0.08);
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Manrope", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(1200px 460px at 12% -8%, #e5f4ff 0%, transparent 56%),
+        radial-gradient(900px 420px at 100% 0%, #ffefd8 0%, transparent 58%),
+        linear-gradient(175deg, #fffdf8 0%, #f6f8fb 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 60px;
+      line-height: 1.5;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .25;
+      background-image:
+        linear-gradient(rgba(17, 24, 39, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17, 24, 39, 0.02) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* ───── HERO ───── */
+    .hero {
+      background:
+        radial-gradient(220px 220px at 85% 22%, rgba(255, 224, 168, 0.3), transparent 70%),
+        linear-gradient(132deg, #0d2037 0%, #102942 45%, #153a4f 100%);
+      color: white;
+      text-align: center;
+      padding: 62px 24px 86px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='40'/%3E%3C/svg%3E") center/cover;
+    }
+    .hero-emoji { font-size: 64px; display: block; margin-bottom: 12px; }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-family: "DM Serif Display", "Songti SC", serif;
+      font-weight: 400;
+      letter-spacing: .6px;
+    }
+    .hero-sub { margin-top: 10px; font-size: 18px; opacity: .8; }
+    .hero-tags { margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .tag {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.28);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ───── CONTAINER ───── */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+    /* ───── TAB NAVIGATION ───── */
+    .tab-nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(12px);
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+      margin: -40px auto 24px;
+      max-width: 860px;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 16px 0;
+      border: none;
+      background: white;
+      font-size: 15px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: var(--red);
+      border-bottom-color: var(--red);
+    }
+    .tab-btn:focus-visible,
+    .collapse-btn:focus-visible,
+    .checkin-fab:focus-visible,
+    .submit-btn:focus-visible,
+    .export-btn:focus-visible {
+      outline: 3px solid rgba(17, 138, 178, 0.3);
+      outline-offset: -1px;
+    }
+    .tab-btn .emoji { font-size: 20px; display: block; margin-bottom: 2px; }
+
+    /* ───── PAGE SECTIONS ───── */
+    .page-section { display: none; }
+    .page-section.active {
+      display: block;
+      animation: fadeUp .28s ease-out;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ───── CHECK-IN STYLES ───── */
+    .checkin-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--red);
+      color: white;
+      border: none;
+      font-size: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(231,76,60,0.5);
+      z-index: 200;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .checkin-fab:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(231,76,60,0.6); }
+
+    .checkin-header {
+      background: linear-gradient(135deg, var(--red), #c0392b);
+      color: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .checkin-header h2 { font-size: 20px; margin-bottom: 6px; }
+    .checkin-header p { font-size: 13px; opacity: 0.9; }
+    .checkin-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 16px;
+    }
+    .checkin-stat { text-align: center; }
+    .checkin-stat .num { font-size: 28px; font-weight: 800; }
+    .checkin-stat .label { font-size: 11px; opacity: 0.8; }
+
+    .checkin-list { margin-top: 8px; }
+    .checkin-item {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .checkin-item .item-user { font-size: 28px; flex-shrink: 0; }
+    .checkin-item .item-body { flex: 1; }
+    .checkin-item .item-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .checkin-item .item-meta { font-size: 11px; color: #888; display: flex; gap: 8px; flex-wrap: wrap; }
+    .checkin-item .item-note { font-size: 13px; color: #555; margin-top: 6px; padding: 8px; background: #f9f9f9; border-radius: 8px; }
+    .checkin-item .item-photo { margin-top: 8px; border-radius: 10px; overflow: hidden; }
+    .checkin-item .item-photo img { width: 100%; border-radius: 10px; display: block; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 300;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: #ddd;
+      border-radius: 2px;
+      margin: 0 auto 20px;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .loc-btn {
+      padding: 10px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      background: white;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .loc-btn.selected {
+      border-color: var(--red);
+      background: #FDF2F2;
+    }
+    .loc-btn .loc-name { font-weight: 600; display: block; }
+    .loc-btn .loc-day { font-size: 11px; color: #888; }
+
+    .photo-area {
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      margin-bottom: 16px;
+      overflow: hidden;
+      position: relative;
+      background: #fafafa;
+    }
+    .photo-area:hover { border-color: var(--red); background: #fdf2f2; }
+    .photo-area.has-photo { border-style: solid; border-color: var(--green); }
+    .photo-area img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-area .hint { color: #aaa; font-size: 13px; text-align: center; }
+    .photo-area .hint .icon { font-size: 32px; display: block; margin-bottom: 4px; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #555;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { outline: none; border-color: var(--red); }
+
+    .user-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .user-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      background: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .user-btn.selected { border-color: var(--blue); background: #EBF5FB; color: var(--blue); }
+    .user-btn .user-icon { font-size: 24px; display: block; margin-bottom: 2px; }
+
+    .location-status {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .location-status.loading { background: #FEF9E7; color: #B7950B; }
+    .location-status.success { background: #E9F7EF; color: var(--green); }
+    .location-status.error { background: #FDEDEC; color: var(--red); }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 600;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Report Section */
+    .report-section {
+      background: white;
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .report-section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #reportMap { height: 280px; border-radius: 12px; z-index: 1; }
+
+    .photo-wall {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+    .photo-wall .photo-thumb {
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .photo-wall .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .export-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 30px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ───── SECTION HEADER ───── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 48px 0 20px;
+    }
+    .section-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(160deg, var(--navy), #224261);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(13, 32, 55, 0.25);
+    }
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: .2px;
+    }
+
+    /* ───── CARDS ───── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+      margin-bottom: 16px;
+      border-left: 5px solid var(--blue);
+      border-top: 1px solid #f2ede4;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(6, 31, 53, 0.12); }
+    .card.orange { border-color: var(--orange); }
+    .card.green  { border-color: var(--green); }
+    .card.red    { border-color: var(--red); }
+    .card.yellow { border-color: var(--yellow); }
+    .card.purple { border-color: #9b5de5; }
+
+    /* ───── FLIGHT/HOTEL INFO ───── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .info-item {
+      background: var(--light);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .info-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .info-value { font-size: 15px; font-weight: 600; margin-top: 4px; color: var(--navy); }
+
+    /* ───── HERO COUNTDOWN ───── */
+    .countdown-banner {
+      color: white;
+      text-align: center;
+      margin: 18px auto 0;
+      padding: 10px 16px;
+      border-radius: 14px;
+      width: min(560px, 100%);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
+      position: relative;
+      z-index: 1;
+    }
+    .countdown-banner::before { display: none; }
+    .countdown-pretrip { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+    .countdown-intrip  { background: linear-gradient(135deg, #1b4332, #2d6a4f); }
+    .countdown-after   { background: linear-gradient(135deg, #6c757d, #495057); }
+    .countdown-num {
+      font-size: clamp(48px, 12vw, 80px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .countdown-label {
+      font-size: 15px;
+      opacity: .85;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .countdown-sub {
+      font-size: 13px;
+      opacity: .7;
+      margin-top: 8px;
+    }
+    .countdown-today-label {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .countdown-current {
+      font-size: 14px;
+      opacity: .9;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ───── NEXT UP CARD ───── */
+    .next-up-card {
+      background: linear-gradient(132deg, #164b43, #1f7a6d);
+      color: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      display: none;
+    }
+    .next-up-card.visible { display: block; }
+    .next-up-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='150' cy='50' r='80' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") right top/cover;
+    }
+    .next-up-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .next-up-pulse {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #06d6a0;
+      box-shadow: 0 0 0 0 rgba(6,214,160,.7);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(6,214,160,.7); }
+      70%  { box-shadow: 0 0 0 10px rgba(6,214,160,0); }
+      100% { box-shadow: 0 0 0 0 rgba(6,214,160,0); }
+    }
+    .next-up-label { font-size: 12px; opacity: .8; text-transform: uppercase; letter-spacing: 1px; }
+    .next-up-time  { font-size: 13px; opacity: .7; margin-top: 4px; }
+    .next-up-title { font-size: 20px; font-weight: 700; margin: 8px 0 4px; }
+    .next-up-desc  { font-size: 13px; opacity: .85; line-height: 1.5; }
+    .next-up-daytabs {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .day-tab {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.3);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .day-tab:hover { background: rgba(255,255,255,.3); }
+    .day-tab.active { background: rgba(255,255,255,.9); color: #1b4332; }
+
+    /* ───── ACTIVE TIMELINE ITEM ───── */
+    .tl-item.active-item {
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+      border-radius: 10px;
+      padding: 12px 16px !important;
+      border: 2px solid #06d6a0 !important;
+      position: relative;
+    }
+    .tl-item.active-item .tl-dot {
+      width: 14px; height: 14px;
+      box-shadow: 0 0 0 4px rgba(6,214,160,.3);
+      background: #06d6a0 !important;
+    }
+    .tl-item.active-item::after {
+      content: '▶';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #06d6a0;
+      font-size: 12px;
+    }
+
+    /* ───── DAY BLOCKS ───── */
+    .day-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      margin-bottom: 24px;
+      border: 1px solid #f2ede4;
+    }
+    .day-header {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      position: relative;
+    }
+    .day-header::after {
+      content: '';
+      position: absolute;
+      right: -28px;
+      top: -28px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.25);
+    }
+    .day-header .date-badge {
+      background: rgba(255,255,255,0.25);
+      border-radius: 8px;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .day1 .day-header { background: linear-gradient(90deg, #0f3460, #116466); }
+    .day2 .day-header { background: linear-gradient(90deg, #e63946, #c9184a); }
+    .day3 .day-header { background: linear-gradient(90deg, #f77f00, #fcbf49); }
+    .day4 .day-header { background: linear-gradient(90deg, #118ab2, #06d6a0); }
+
+    .day-body { padding: 0 24px 20px; }
+
+    /* ───── TIMELINE ───── */
+    .timeline { margin-top: 16px; }
+    .tl-item {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--border);
+      transition: background-color .18s ease;
+    }
+    .tl-item:hover { background: rgba(6, 31, 53, 0.02); }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-time {
+      flex-shrink: 0;
+      width: 68px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      padding-top: 2px;
+    }
+    .tl-dot {
+      flex-shrink: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+      margin-top: 6px;
+      border: 2px solid rgba(255,255,255,.7);
+      box-shadow: 0 0 0 1px rgba(31, 94, 122, .25);
+    }
+    .tl-dot.orange { background: var(--orange); }
+    .tl-dot.green  { background: var(--green); }
+    .tl-dot.red    { background: var(--red); }
+    .tl-dot.yellow { background: #f9c74f; }
+    .tl-dot.purple { background: #9b5de5; }
+    .tl-content { flex: 1; }
+    .tl-title { font-size: 15px; font-weight: 600; color: var(--navy); line-height: 1.4; }
+    .tl-desc { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+    .tl-desc strong { color: var(--text); }
+    .tl-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .badge-food { background: #fff3cd; color: #856404; }
+    .badge-sight { background: #d1ecf1; color: #0c5460; }
+    .badge-transport { background: #e2d9f3; color: #5b2d8e; }
+    .badge-hotel { background: #d4edda; color: #155724; }
+    .badge-tip { background: #fce4ec; color: #880e4f; }
+    .badge-special { background: #fff0f6; color: #9b5de5; font-size: 12px; }
+
+    /* ───── TIPS BOX ───── */
+    .tips-box {
+      background: linear-gradient(140deg, #fff7df, #fff2df);
+      border: 1px solid #f3d999;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-top: 16px;
+    }
+    .tips-box h4 { font-size: 14px; font-weight: 700; color: #e65100; margin-bottom: 10px; }
+    .tips-box ul { list-style: none; }
+    .tips-box li { font-size: 13px; color: #5d4037; padding: 4px 0; padding-left: 20px; position: relative; }
+    .tips-box li::before { content: '💡'; position: absolute; left: 0; font-size: 12px; }
+
+    /* ───── NOTICE ───── */
+    .notice {
+      background: linear-gradient(160deg, #eaf5ff 0%, #e6f3f5 100%);
+      border-left: 4px solid #2b6a94;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #1f4f72;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+    .notice strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+    /* ───── PACKING ───── */
+    .pack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .pack-item {
+      background: var(--light);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .pack-item span { line-height: 1.4; color: var(--text); }
+
+    /* ───── FOOTER ───── */
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 48px;
+      padding: 0 20px;
+    }
+
+    /* ───── COLLAPSE BUTTONS ───── */
+    .collapse-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .collapse-btn {
+      flex: 1;
+      min-width: 140px;
+      background: linear-gradient(140deg, #112843, #1e415f);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(15, 52, 96, 0.3);
+    }
+    .collapse-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(15, 52, 96, 0.4);
+    }
+    .collapse-btn.active {
+      background: linear-gradient(140deg, #1f5e7a, #18a999);
+    }
+    .collapse-arrow {
+      transition: transform 0.3s;
+      font-size: 12px;
+    }
+    .collapse-btn.active .collapse-arrow {
+      transform: rotate(180deg);
+    }
+    .collapse-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
+      opacity: 0;
+    }
+    .collapse-content.open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table-wrap table { min-width: 680px; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 40px 16px 60px; }
+      .container { padding: 0 14px; }
+      .tab-btn { font-size: 14px; padding: 12px 0; }
+      .section-header { margin: 36px 0 14px; }
+      .section-header h2 { font-size: 20px; }
+      .card { padding: 18px; }
+      .day-header { padding: 14px 16px; font-size: 16px; }
+      .day-body { padding: 0 16px 14px; }
+      .tl-time { width: 56px; font-size: 12px; }
+      .tl-title { font-size: 14px; }
+      .checkin-fab { right: 16px; bottom: 16px; width: 58px; height: 58px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ HERO ════════ -->
+<div class="hero">
+  <span class="hero-emoji">🇸🇬</span>
+  <h1>新加坡旅行攻略</h1>
+  <p class="hero-sub">5月1日 – 5月4日</p>
+  <div class="countdown-banner" id="countdownBanner">
+    <div class="countdown-num" id="countdownNum">--</div>
+    <div class="countdown-label" id="countdownLabel">加载中...</div>
+    <div class="countdown-sub" id="countdownSub"></div>
+  </div>
+  <div class="hero-tags">
+    <span class="tag">✈️ TR983 / TR982</span>
+    <span class="tag">🏨 Hotel Mi Rochor</span>
+  </div>
+</div>
+
+<!-- ════════ TAB NAVIGATION ════════ -->
+<nav class="tab-nav">
+  <button class="tab-btn active" id="tab-guide" onclick="switchTab('guide')">
+    <span class="emoji">📋</span>
+    攻略
+  </button>
+  <button class="tab-btn" id="tab-checkin" onclick="switchTab('checkin')">
+    <span class="emoji">📍</span>
+    打卡
+  </button>
+</nav>
+
+<!-- ════════ GUIDE PAGE ════════ -->
+<div id="page-guide" class="page-section active">
+<div class="container">
+
+  <!-- ════════ 今日行程提醒 ════════ -->
+  <div class="next-up-card" id="nextUpCard">
+    <div class="next-up-header">
+      <div class="next-up-pulse"></div>
+      <span class="next-up-label">当前行程</span>
+    </div>
+    <div class="next-up-time" id="nextUpTime">--:--</div>
+    <div class="next-up-title" id="nextUpTitle">--</div>
+    <div class="next-up-desc" id="nextUpDesc">--</div>
+    <div class="next-up-daytabs" id="dayTabs">
+      <button class="day-tab" data-day="1">Day 1</button>
+      <button class="day-tab" data-day="2">Day 2</button>
+      <button class="day-tab" data-day="3">Day 3</button>
+      <button class="day-tab" data-day="4">Day 4</button>
+    </div>
+  </div>
+
+  <!-- ════════ 航班 & 酒店信息 ════════ -->
+  <div class="section-header">
+    <div class="section-icon">✈️</div>
+    <h2>出行基本信息</h2>
+  </div>
+
+  <!-- 可收起的按钮 -->
+  <div class="collapse-buttons">
+    <button class="collapse-btn" onclick="toggleCollapse('flightInfo')">
+      <span>✈️ 航班信息</span>
+      <span class="collapse-arrow" id="flightArrow">▼</span>
+    </button>
+    <button class="collapse-btn" onclick="toggleCollapse('hotelInfo')">
+      <span>🏨 酒店信息</span>
+      <span class="collapse-arrow" id="hotelArrow">▼</span>
+    </button>
+  </div>
+
+  <!-- 航班信息（可收起） -->
+  <div id="flightInfo" class="collapse-content">
+    <div class="card">
+      <p style="font-weight:700;font-size:15px;margin-bottom:12px;color:var(--navy)">🛫 去程航班</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">航班</div><div class="info-value">TR983</div></div>
+        <div class="info-item"><div class="info-label">日期</div><div class="info-value">5月1日（周五）</div></div>
+        <div class="info-item"><div class="info-label">出发</div><div class="info-value">20:45 香港国际机场 T1</div></div>
+        <div class="info-item"><div class="info-label">到达</div><div class="info-value">00:45+1 新加坡樟宜机场 T1</div></div>
+      </div>
+      <p style="font-weight:700;font-size:15px;margin:12px 0;color:var(--navy)">🛬 回程航班</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">航班</div><div class="info-value">TR982</div></div>
+        <div class="info-item"><div class="info-label">日期</div><div class="info-value">5月4日（周一）</div></div>
+        <div class="info-item"><div class="info-label">出发</div><div class="info-value">15:25 樟宜机场 T1</div></div>
+        <div class="info-item"><div class="info-label">到达</div><div class="info-value">19:45 香港国际机场 T1</div></div>
+      </div>
+      <div class="notice">
+        <strong>⚠️ 乘机提示</strong>
+        TR983 / TR982 为捷星亚洲航空，廉航行李额请提前确认，建议提前2小时抵达机场办理值机。建议在Fever官网提前购好老友记展览票，现场排队时间可省。
+      </div>
+    </div>
+  </div>
+
+  <!-- 酒店信息（可收起） -->
+  <div id="hotelInfo" class="collapse-content">
+    <div class="card green">
+      <p style="font-weight:700;font-size:15px;margin-bottom:12px;color:var(--navy)">🏨 酒店信息</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">酒店名称</div><div class="info-value">米梧槽酒店<br><span style="font-size:12px;font-weight:400;">Hotel Mi Rochor</span></div></div>
+        <div class="info-item"><div class="info-label">入住 / 退房</div><div class="info-value">5月1日 → 5月4日</div></div>
+        <div class="info-item"><div class="info-label">房型</div><div class="info-value">高级大床房带天井（2人）</div></div>
+        <div class="info-item"><div class="info-label">地址</div><div class="info-value">89 Short St, Singapore</div></div>
+        <div class="info-item"><div class="info-label">电话</div><div class="info-value">+6566698822</div></div>
+        <div class="info-item"><div class="info-label">位置优势</div><div class="info-value">步行3min至武吉士街购物中心</div></div>
+      </div>
+      <div class="tips-box" style="margin-top:0;">
+        <h4>📍 酒店位置说明</h4>
+        <ul>
+          <li>紧邻 <strong>Bugis（武吉士）</strong>地铁站，出行极便利</li>
+          <li>步行可达小印度、甘榜格南（阿拉伯区）等特色街区</li>
+          <li>距滨海湾金沙约3公里，地铁15分钟可达</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ DAY 1 ════════ -->
+  <div class="section-header">
+    <div class="section-icon">📅</div>
+    <h2>行程详情</h2>
+  </div>
+
+  <div class="day-card day1">
+    <div class="day-header">
+      <span>🛬</span>
+      <div>
+        <div>第一天 · 抵达新加坡</div>
+        <div class="date-badge">5月1日（周五）劳动节</div>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="notice" style="margin-top:16px;">
+        <strong>📌 今日说明</strong>
+        从深圳福田口岸出发，过境香港后在上水吃晚餐，再乘机场巴士前往机场。抵达新加坡后已过地铁末班车，叫 Grab 直接到酒店入住即可。
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-time">约 13:00</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">🚇 深圳福田口岸 → 过关前往香港</div>
+            <div class="tl-desc">
+              持港澳通行证在<strong>福田口岸</strong>自助过关。<br>
+              过关后直接进入香港<strong>落马洲站</strong>，乘<strong>东铁线</strong>前往上水。<br>
+              <span class="tl-badge badge-transport">交通</span>过关+东铁线约20–30分钟
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">约 14:00</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">🍜 晚餐：上水 · 老陈面馆</div>
+            <div class="tl-desc">
+              东铁线<strong>上水站</strong>A3出口步行约5分钟，品尝地道港式车仔面/牛腩面。<br>
+              老陈面馆是本地人气老店，汤底浓郁，配料丰富，约 <strong>HKD 40–60/人</strong>。<br>
+              <span class="tl-badge badge-food">美食</span>推荐：咖喱鱼蛋、牛腩面、卤水鸡翅<br>
+              <span class="tl-badge badge-tip">提示</span>上水站附近有商场可买零食带上飞机
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">约 15:30</div>
+          <div class="tl-dot orange"></div>
+          <div class="tl-content">
+            <div class="tl-title">🚌 上水站 → 香港国际机场 T1</div>
+            <div class="tl-desc">
+              <strong>路线：</strong>上水站D1出口 → 步行至「上水总站」巴士站 → 乘<strong>A43机场巴士</strong>直达机场。<br>
+              <strong>耗时：</strong>约50–60分钟（视交通情况）。<br>
+              <strong>费用：</strong>约 HKD 30.9/人。<br>
+              <span class="tl-badge badge-transport">交通</span>A43为双层巴士，可放行李，直达机场T1航站楼
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">约 17:00</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">✈️ 抵达香港国际机场 T1 · 办理值机</div>
+            <div class="tl-desc">
+              抵达后前往<strong>T1 捷星亚洲柜台</strong>办理登机手续（航班 TR983）。<br>
+              建议提前在机场闲逛、买零食，为飞机上准备一些零食。<br>
+              <span class="tl-badge badge-tip">提示</span>捷星为廉航，无免费餐食，可提前在机场买好三文治/杯面带上飞机
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">20:45</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">✈️ 香港国际机场 T1 出发</div>
+            <div class="tl-desc">TR983 起飞，飞行时长约3.5小时。建议提前2小时到机场，机上可休息。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">00:45+1</div>
+          <div class="tl-dot orange"></div>
+          <div class="tl-content">
+            <div class="tl-title">🛬 抵达樟宜机场 T1 → 🚗 Grab去酒店</div>
+            <div class="tl-desc">
+              入境、取行李，机场T1出口直接叫 <strong>Grab</strong>（新加坡版滴滴），车程约25分钟，深夜预计 <strong>SGD 25–35</strong>。<br>
+              <span class="tl-badge badge-transport">交通</span>已过地铁末班车，建议 Grab 或 Taxi
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">约02:00</div>
+          <div class="tl-dot green"></div>
+          <div class="tl-content">
+            <div class="tl-title">🏨 入住 Hotel Mi Rochor</div>
+            <div class="tl-desc">办理入住，好好休息。明天正式开始新加坡之旅！</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ DAY 2 ════════ -->
+  <div class="day-card day2">
+    <div class="day-header">
+      <span>🌆</span>
+      <div>
+        <div>第二天 · 文化街区漫游</div>
+        <div class="date-badge">5月2日（周六）</div>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="notice" style="margin-top:16px;">
+        <strong>📌 今日主题：武吉士 + 甘榜格南 + 小印度，步行游览三大文化街区，慢慢逛</strong>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-time">09:00</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">☕ 早餐：亚坤咖椰吐司（Ya Kun Kaya Toast）</div>
+            <div class="tl-desc">新加坡经典早餐，酒店附近武吉士一带有门店。<strong>咖椰吐司 + 半熟蛋 + 咖啡/茶</strong>，约SGD 7–10/人。<br><span class="tl-badge badge-food">美食</span>绝对不能错过的本地早餐体验</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">10:00</div>
+          <div class="tl-dot orange"></div>
+          <div class="tl-content">
+            <div class="tl-title">🕌 甘榜格南 · 苏丹清真寺 & 哈芝巷（Haji Lane）</div>
+            <div class="tl-desc">从酒店步行约10分钟即到。<strong>哈芝巷</strong>是最美打卡街道，两侧彩绘涂鸦+独立小店，非常适合拍照。<strong>苏丹清真寺</strong>（Sultan Mosque）金顶壮观，注意着装需遮肩盖膝。<br><span class="tl-badge badge-sight">景点</span>免费 · 建议游览1–1.5小时</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">11:30</div>
+          <div class="tl-dot red"></div>
+          <div class="tl-content">
+            <div class="tl-title">🛍️ 阿拉伯街购物闲逛</div>
+            <div class="tl-desc">甘榜格南周边的<strong>阿拉伯街（Arab Street）</strong>有各色香料店、布料店和特色咖啡馆，可随意探索，不买也值得逛逛。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">13:00</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">🍜 午餐：叻沙 / 扁担咖喱（Zam Zam Restaurant）</div>
+            <div class="tl-desc">甘榜格南区域的<strong>Zam Zam</strong>是百年老店，印巴风味Murtabak（煎饼）和Biryani极有特色，约SGD 12–18/人。<br>或者在附近探索本地咖啡馆（kopitiam），随意、悠闲。<span class="tl-badge badge-food">美食</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">14:30</div>
+          <div class="tl-dot purple"></div>
+          <div class="tl-content">
+            <div class="tl-title">🌸 小印度（Little India）漫步</div>
+            <div class="tl-desc">从甘榜格南步行或乘一站地铁到<strong>小印度</strong>。鲜花街、彩色门廊、芥末黄咖喱香气……色彩极度丰富，超适合拍照。逛逛<strong>竹脚中心（Tekka Centre）</strong>市场，可以买到新鲜热带水果。<br><span class="tl-badge badge-sight">景点</span>免费 · 游览约1.5小时</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">16:30</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">🏨 回酒店休息片刻</div>
+            <div class="tl-desc">走了半天，回酒店休息、换衣，准备晚上出发。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">18:30</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">🦀 晚餐：辣椒螃蟹 / 海南鸡饭</div>
+            <div class="tl-desc">
+              <strong>辣椒螃蟹</strong>是新加坡必吃国宝级美食，推荐地点：<br>
+              • <strong>No Signboard Seafood</strong>（武吉士一带，步行可达，约SGD 60–80/只）<br>
+              • 或者选择更经济实惠的<strong>天天海南鸡饭</strong>（Maxwell Road附近或武吉士）<br>
+              <span class="tl-badge badge-food">美食</span>提前网上预订或早去避免等候
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">20:30</div>
+          <div class="tl-dot orange"></div>
+          <div class="tl-content">
+            <div class="tl-title">🍦 甜品收尾：武吉士街夜市逛逛</div>
+            <div class="tl-desc">饭后沿<strong>武吉士街（Bugis Street）</strong>夜市散步，可以尝试新加坡<strong>芒果班兰冰淇淋</strong>或花生冰淇淋三明治，悠闲结束一天。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ DAY 3 ════════ -->
+  <div class="day-card day3">
+    <div class="day-header">
+      <span>📺</span>
+      <div>
+        <div>第三天 · 老友记展 + 乌节路</div>
+        <div class="date-badge">5月3日（周日）</div>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="notice" style="margin-top:16px;">
+        <strong>📌 今日主题：重磅打卡《老友记》沉浸式体验展，下午逛乌节路，晚上漫步滨海湾</strong>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-time">09:00</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">☕ 悠闲早餐</div>
+            <div class="tl-desc">在酒店附近随意找一家咖啡馆/面包店，今天是展览日，心情放松慢慢来。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">10:30</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">🚇 前往老友记展览</div>
+            <div class="tl-desc">从武吉士站乘坐地铁 <strong>东西线→Orchard站</strong> 或步行到乌节路附近，再步行/打车约5分钟至 <strong>25 Scotts Road</strong>（Fever Exhibition Hall）。<br><span class="tl-badge badge-transport">交通</span>约30分钟到达</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">11:00</div>
+          <div class="tl-dot purple"></div>
+          <div class="tl-content">
+            <div class="tl-title">📺 THE FRIENDS™ EXPERIENCE — 老友记沉浸式体验展 ⭐</div>
+            <div class="tl-desc">
+              <span class="tl-badge badge-special">🌟 必打卡</span><br>
+              地址：<strong>Fever Exhibition Hall, 25 Scotts Road, Singapore 228220</strong><br>
+              周六日开放时间：<strong>10:00–22:00</strong>（最晚20:30入场）<br>
+              体验时长：约 <strong>1小时</strong><br><br>
+              展览亮点：<br>
+              • 走进还原1:1的 <strong>莫妮卡与瑞秋的公寓</strong><br>
+              • 坐上 <strong>Central Perk 咖啡馆的橙色沙发</strong> 拍照<br>
+              • 穿戴剧中服装道具互动<br>
+              • 乔伊和钱德勒的公寓、钱德勒求婚场景等多个场景<br><br>
+              票务：建议提前在 <strong>feverup.com/m/527211</strong> 预购（末周有20%折扣）<br>
+              <span class="tl-badge badge-tip">提示</span>此展5月3日为最后几天，记得提前买票！
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">12:30</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">🍱 午餐：乌节路美食广场</div>
+            <div class="tl-desc">展览结束后就在<strong>乌节路（Orchard Road）</strong>一带解决午饭。<strong>ION Orchard 购物中心</strong>地下楼层有各式美食，海南鸡饭、炒粿条、肉骨茶等本地美食都有，价格亲民。约SGD 10–18/人。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">14:00</div>
+          <div class="tl-dot orange"></div>
+          <div class="tl-content">
+            <div class="tl-title">🛍️ 乌节路购物（随意逛）</div>
+            <div class="tl-desc">新加坡核心购物街，沿路有 <strong>ION Orchard、Ngee Ann City（义安城）、313@somerset</strong> 等大型购物中心。喜欢逛就逛，不喜欢就找个地方喝咖啡坐坐，P人不必买遍全场。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">17:00</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">🚇 回酒店休息</div>
+            <div class="tl-desc">乘地铁回武吉士，放下购物战利品，稍作休息，迎接美好的夜晚。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">18:30</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">🍜 晚餐：肉骨茶（Bak Kut Teh）</div>
+            <div class="tl-desc">推荐 <strong>松发肉骨茶</strong>（Song Fa Bak Kut Teh），新加坡老牌名店，武吉士附近有分店。药材汤底浓郁，搭配米饭和油条，价格实惠约 SGD 15–20/人。<br><span class="tl-badge badge-food">美食</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">20:00</div>
+          <div class="tl-dot green"></div>
+          <div class="tl-content">
+            <div class="tl-title">🌃 夜游滨海湾 · 鱼尾狮 & 滨海湾金沙</div>
+            <div class="tl-desc">饭后乘地铁到<strong>Bayfront站</strong>，欣赏<strong>滨海湾金沙（Marina Bay Sands）</strong>夜景，漫步到<strong>鱼尾狮公园</strong>拍照留念，步行约15分钟的滨海湾环线非常悠闲惬意。<br><span class="tl-badge badge-sight">景点</span>免费 · 夜景绝美</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">21:30</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">🌿 （可选）滨海湾花园 · 擎天大树光影秀</div>
+            <div class="tl-desc"><strong>Gardens by the Bay</strong> 每晚 19:45 & 20:45 有免费的<strong>擎天大树光影秀（Garden Rhapsody）</strong>，约15分钟，在湖边广场观看即可，无需购票。<br><span class="tl-badge badge-tip">提示</span>如果觉得太晚可跳过，次日早些入睡也很好。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ DAY 4 ════════ -->
+  <div class="day-card day4">
+    <div class="day-header">
+      <span>🛫</span>
+      <div>
+        <div>第四天 · 牛车水 + 返程</div>
+        <div class="date-badge">5月4日（周一）</div>
+      </div>
+    </div>
+    <div class="day-body">
+      <div class="notice" style="margin-top:16px;">
+        <strong>📌 今日安排：上午逛牛车水买手信，午后前往机场，15:25 回港</strong>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-time">08:30</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">☕ 早餐：Killiney Kopitiam</div>
+            <div class="tl-desc">新加坡最老字号咖啡馆之一，咖椰吐司+南洋咖啡，武吉士一带有店。悠闲享受最后一顿新加坡早餐。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">09:30</div>
+          <div class="tl-dot red"></div>
+          <div class="tl-content">
+            <div class="tl-title">🏮 牛车水（Chinatown）购手信</div>
+            <div class="tl-desc">从武吉士乘地铁约10分钟到<strong>Chinatown站</strong>。逛<strong>牛车水街市</strong>和<strong>宝塔街</strong>，购买手信：<br>
+              • <strong>美珍香 / 林志源</strong> 猪肉干（伴手礼首选）<br>
+              • 叻沙料理包、咖椰酱<br>
+              • 各色热带水果干<br>
+              • 小印度香料/咖喱粉<br>
+              <span class="tl-badge badge-tip">提示</span>牛车水店铺一般10点后开门</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">11:00</div>
+          <div class="tl-dot yellow"></div>
+          <div class="tl-content">
+            <div class="tl-title">🍲 提早午餐：老巴刹（Lau Pa Sat）</div>
+            <div class="tl-desc"><strong>老巴刹（Telok Ayer Market）</strong>是新加坡最古老的美食中心之一，维多利亚式铸铁建筑超级有特色。各种本地美食都有，适合最后补一顿新加坡味道。约SGD 10–15/人。<br><span class="tl-badge badge-food">美食</span>从牛车水步行约10分钟</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">12:30</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-title">🏨 回酒店 · 退房</div>
+            <div class="tl-desc">退房办理，整理行李。酒店前台可寄存行李至离店前。</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">13:00</div>
+          <div class="tl-dot green"></div>
+          <div class="tl-content">
+            <div class="tl-title">🚇 前往机场（MRT地铁直达）</div>
+            <div class="tl-desc">
+              从<strong>Bugis站</strong>乘东西线→ <strong>Tanah Merah站</strong> 换乘机场线 → <strong>Changi Airport站</strong>，全程约30分钟，费用约 <strong>SGD 2–2.5</strong>。<br>
+              抵达T3后乘免费Skytrain至T1（约5分钟）。<br>
+              <span class="tl-badge badge-transport">交通</span>TR982 15:25出发，建议 <strong>13:25前抵达机场</strong>
+            </div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">15:25</div>
+          <div class="tl-dot red"></div>
+          <div class="tl-content">
+            <div class="tl-title">✈️ TR982 起飞 · 返回香港</div>
+            <div class="tl-desc">抵达香港国际机场约 19:45。再见，新加坡！🦁</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════ 实用贴士 ════════ -->
+  <div class="section-header">
+    <div class="section-icon">💡</div>
+    <h2>实用旅行贴士</h2>
+  </div>
+
+  <div class="card yellow">
+    <p style="font-weight:700;font-size:15px;margin-bottom:16px;color:var(--navy)">💳 货币与支付</p>
+    <div class="timeline">
+      <div class="tl-item" style="padding:8px 0;">
+        <div class="tl-dot yellow"></div>
+        <div class="tl-content">
+          <div class="tl-title">新加坡元（SGD）</div>
+          <div class="tl-desc">1 SGD ≈ 5.4 HKD / ≈ 5.3 CNY（汇率请出发前确认）</div>
+        </div>
+      </div>
+      <div class="tl-item" style="padding:8px 0;">
+        <div class="tl-dot yellow"></div>
+        <div class="tl-content">
+          <div class="tl-title">支付方式</div>
+          <div class="tl-desc">大部分景点、餐厅、商店均支持 Visa/Mastercard 信用卡，部分摊位需要现金。<strong>建议兑换少量现金（SGD 100–200/人）</strong>备用。</div>
+        </div>
+      </div>
+      <div class="tl-item" style="padding:8px 0;">
+        <div class="tl-dot yellow"></div>
+        <div class="tl-content">
+          <div class="tl-title">EZ-Link 交通卡</div>
+          <div class="tl-desc">地铁/巴士通用，机场可购买（押金SGD 5+充值）；也可用Apple Pay / Google Pay过闸；Grab付款支持信用卡。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card purple">
+    <p style="font-weight:700;font-size:15px;margin-bottom:16px;color:var(--navy)">📱 必备App</p>
+    <div class="pack-grid">
+      <div class="pack-item">🚗 <span><strong>Grab</strong><br>打车/外卖首选</span></div>
+      <div class="pack-item">🗺️ <span><strong>Google Maps</strong><br>导航神器</span></div>
+      <div class="pack-item">🎫 <span><strong>Fever App</strong><br>展览入场票</span></div>
+      <div class="pack-item">🚇 <span><strong>SG Trains</strong><br>地铁线路查询</span></div>
+      <div class="pack-item">💱 <span><strong>Wise / Revolut</strong><br>免手续费消费</span></div>
+      <div class="pack-item">☁️ <span><strong>天气App</strong><br>防雨防晒</span></div>
+    </div>
+  </div>
+
+  <div class="card green">
+    <p style="font-weight:700;font-size:15px;margin-bottom:16px;color:var(--navy)">🎒 行李建议</p>
+    <div class="pack-grid">
+      <div class="pack-item">☔ <span><strong>折叠雨伞</strong><br>新加坡骤雨多</span></div>
+      <div class="pack-item">🧴 <span><strong>防晒霜</strong><br>赤道阳光猛烈</span></div>
+      <div class="pack-item">🩴 <span><strong>舒适鞋</strong><br>步行量较大</span></div>
+      <div class="pack-item">🧥 <span><strong>薄外套</strong><br>室内冷气极足</span></div>
+      <div class="pack-item">📄 <span><strong>护照 + 机票</strong><br>入境必备</span></div>
+      <div class="pack-item">🔋 <span><strong>充电宝</strong><br>拍照用量大</span></div>
+    </div>
+  </div>
+
+  <div class="tips-box">
+    <h4>🌤️ 天气与其他提示</h4>
+    <ul>
+      <li>新加坡5月气温约 <strong>27–33°C</strong>，全年高温潮湿，建议穿轻薄透气衣物</li>
+      <li>午后容易有短暂阵雨，随身携带雨伞或雨衣</li>
+      <li>新加坡地铁冷气非常足，室内外温差大，薄外套必备</li>
+      <li>5月2日是周六，老友记展览周末开门更早（10:00），可提前出发</li>
+      <li>老友记展 <strong>5月3日是最后一天</strong>，建议提前在Fever网站预购，避免当天卖完</li>
+      <li>新加坡整体治安极好，夜间出行无需担心，可以放心夜游</li>
+      <li>地铁、巴士上禁止饮食，进食会被罚款</li>
+    </ul>
+  </div>
+
+  <!-- ════════ 行程总览 ════════ -->
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>行程一览表</h2>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div class="table-wrap">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="background:var(--navy);color:white;">
+          <th style="padding:14px 16px;text-align:left;font-size:13px;">日期</th>
+          <th style="padding:14px 16px;text-align:left;font-size:13px;">主题</th>
+          <th style="padding:14px 16px;text-align:left;font-size:13px;">主要行程</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#f8f9ff;border-bottom:1px solid var(--border);">
+          <td style="padding:14px 16px;font-weight:700;color:var(--navy);font-size:13px;white-space:nowrap;">5月1日<br><span style="font-weight:400;color:var(--muted)">周五</span></td>
+          <td style="padding:14px 16px;font-size:13px;font-weight:600;">抵达日 🛬</td>
+          <td style="padding:14px 16px;font-size:13px;color:var(--muted);">深夜抵达樟宜机场 → Grab到酒店入住</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:14px 16px;font-weight:700;color:var(--navy);font-size:13px;white-space:nowrap;">5月2日<br><span style="font-weight:400;color:var(--muted)">周六</span></td>
+          <td style="padding:14px 16px;font-size:13px;font-weight:600;">文化街区 🌈</td>
+          <td style="padding:14px 16px;font-size:13px;color:var(--muted);">早餐咖椰吐司 → 甘榜格南/哈芝巷 → 小印度 → 辣椒螃蟹晚餐 → 武吉士夜市</td>
+        </tr>
+        <tr style="background:#f8f9ff;border-bottom:1px solid var(--border);">
+          <td style="padding:14px 16px;font-weight:700;color:var(--navy);font-size:13px;white-space:nowrap;">5月3日<br><span style="font-weight:400;color:var(--muted)">周日</span></td>
+          <td style="padding:14px 16px;font-size:13px;font-weight:600;">老友记展 📺✨</td>
+          <td style="padding:14px 16px;font-size:13px;color:var(--muted);">老友记沉浸式体验展 → 乌节路 → 肉骨茶晚餐 → 滨海湾夜景</td>
+        </tr>
+        <tr>
+          <td style="padding:14px 16px;font-weight:700;color:var(--navy);font-size:13px;white-space:nowrap;">5月4日<br><span style="font-weight:400;color:var(--muted)">周一</span></td>
+          <td style="padding:14px 16px;font-size:13px;font-weight:600;">购手信返港 🛫</td>
+          <td style="padding:14px 16px;font-size:13px;color:var(--muted);">牛车水买手信 → 老巴刹午饭 → 退房 → 乘MRT去机场 → 15:25飞回香港</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>✈️ 祝旅途愉快，行程轻松，老友记展不要错过！🛋️</p>
+  <p style="margin-top:6px;font-size:12px;">本攻略根据2026年5月实际航班及酒店信息定制 · 景点信息请出发前再次核实</p>
+</footer>
+
+<script>
+// ════════ 行程数据 ════════
+const tripStart = new Date('2026-05-01T00:00:00+08:00'); // 新加坡时间
+const tripEnd = new Date('2026-05-04T23:59:59+08:00');
+
+const scheduleData = {
+  1: [
+    { time: '13:00', title: '🚇 深圳福田口岸 → 过关', desc: '持港澳通行证自助过关，乘东铁线入港', type: 'transport' },
+    { time: '14:00', title: '🍜 上水 · 老陈面馆', desc: '地道港式车仔面，东铁线上水站A3出口', type: 'food' },
+    { time: '15:30', title: '🚌 上水站 → 香港机场', desc: 'A43机场巴士直达，约50–60分钟', type: 'transport' },
+    { time: '17:00', title: '✈️ 抵达香港机场T1 · 办值机', desc: '捷星亚洲柜台，托运登机箱', type: 'transport' },
+    { time: '20:45', title: '✈️ TR983 起飞', desc: '飞行约3.5小时，机上休息', type: 'transport' },
+    { time: '00:45', title: '🛬 抵达樟宜机场 T1', desc: '入境、取行李，叫Grab前往酒店', type: 'transport' },
+    { time: '02:00', title: '🏨 入住 Hotel Mi Rochor', desc: '办理入住，好好休息', type: 'hotel' }
+  ],
+  2: [
+    { time: '09:00', title: '☕ 早餐：亚坤咖椰吐司', desc: '新加坡经典早餐，咖椰吐司+半熟蛋+咖啡', type: 'food' },
+    { time: '10:00', title: '🕌 甘榜格南 · 苏丹清真寺 & 哈芝巷', desc: '最美打卡街道，彩绘涂鸦+独立小店', type: 'sight' },
+    { time: '11:30', title: '🛍️ 阿拉伯街购物闲逛', desc: '香料店、布料店和特色咖啡馆', type: 'sight' },
+    { time: '13:00', title: '🍜 午餐：Zam Zam Restaurant', desc: '百年老店，印巴风味Murtabak和Biryani', type: 'food' },
+    { time: '14:30', title: '🌸 小印度（Little India）漫步', desc: '鲜花街、彩色门廊、芥末黄咖喱香气', type: 'sight' },
+    { time: '16:30', title: '🏨 回酒店休息片刻', desc: '走了半天，回酒店休息、换衣', type: 'hotel' },
+    { time: '18:30', title: '🦀 晚餐：辣椒螃蟹 / 海南鸡饭', desc: 'No Signboard Seafood 或天天海南鸡饭', type: 'food' },
+    { time: '20:30', title: '🍦 甜品收尾：武吉士街夜市', desc: '芒果班兰冰淇淋或花生冰淇淋三明治', type: 'food' }
+  ],
+  3: [
+    { time: '09:00', title: '☕ 悠闲早餐', desc: '在酒店附近随意找咖啡馆/面包店', type: 'food' },
+    { time: '10:30', title: '🚇 前往老友记展览', desc: '地铁东西线→Orchard站，步行至25 Scotts Road', type: 'transport' },
+    { time: '11:00', title: '📺 THE FRIENDS™ EXPERIENCE', desc: '老友记沉浸式体验展 ⭐ 展览最后一天！', type: 'special' },
+    { time: '12:30', title: '🍱 午餐：乌节路美食广场', desc: 'ION Orchard地下楼层，海南鸡饭、炒粿条等', type: 'food' },
+    { time: '14:00', title: '🛍️ 乌节路购物（随意逛）', desc: 'ION Orchard、义安城、313@somerset', type: 'sight' },
+    { time: '17:00', title: '🚇 回酒店休息', desc: '乘地铁回武吉士，放下购物战利品', type: 'hotel' },
+    { time: '18:30', title: '🍜 晚餐：松发肉骨茶', desc: '新加坡老牌名店，药材汤底浓郁', type: 'food' },
+    { time: '20:00', title: '🌃 夜游滨海湾 · 鱼尾狮 & 滨海湾金沙', desc: 'Bayfront站，欣赏夜景，鱼尾狮公园拍照', type: 'sight' },
+    { time: '21:30', title: '🌿 滨海湾花园 · 擎天大树光影秀', desc: 'Garden Rhapsody 免费光影秀（可选）', type: 'sight' }
+  ],
+  4: [
+    { time: '08:30', title: '☕ 早餐：Killiney Kopitiam', desc: '新加坡最老字号咖啡馆，咖椰吐司+南洋咖啡', type: 'food' },
+    { time: '09:30', title: '🏮 牛车水（Chinatown）购手信', desc: '美珍香/林志源猪肉干、叻沙料理包、咖椰酱', type: 'sight' },
+    { time: '11:00', title: '🍲 提早午餐：老巴刹（Lau Pa Sat）', desc: '维多利亚式铸铁建筑美食中心', type: 'food' },
+    { time: '12:30', title: '🏨 回酒店 · 退房', desc: '退房办理，整理行李', type: 'hotel' },
+    { time: '13:00', title: '🚇 前往机场', desc: 'Bugis站→Changi Airport，全程约30分钟', type: 'transport' },
+    { time: '15:25', title: '✈️ TR982 起飞 · 返回香港', desc: '抵达香港国际机场约19:45', type: 'transport' }
+  ]
+};
+
+const dayNames = ['第一天 · 抵达新加坡', '第二天 · 文化街区漫游', '第三天 · 老友记展 + 乌节路', '第四天 · 牛车水 + 返程'];
+
+// ════════ 获取新加坡当前时间 ════════
+function getSGTime() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Singapore' }));
+}
+
+// ════════ 计算倒计时 ════════
+function updateCountdown() {
+  const now = getSGTime();
+  const banner = document.getElementById('countdownBanner');
+  const num = document.getElementById('countdownNum');
+  const label = document.getElementById('countdownLabel');
+  const sub = document.getElementById('countdownSub');
+
+  // 旅行前
+  if (now < tripStart) {
+    const diff = tripStart - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    
+    banner.className = 'countdown-banner countdown-pretrip';
+    num.textContent = days;
+    label.textContent = days <= 0 ? '就是今天！' : `距离出发还有 ${days} 天`;
+    sub.textContent = days <= 0 ? `还有 ${hours} 小时就要起飞啦 ✈️` : '准备好行李，新加坡见！';
+    return 0;
+  }
+
+  // 旅行中
+  if (now >= tripStart && now <= tripEnd) {
+    const dayDiff = Math.floor((now - tripStart) / (1000 * 60 * 60 * 24)) + 1;
+    const currentDay = Math.min(dayDiff, 4);
+    
+    banner.className = 'countdown-banner countdown-intrip';
+    num.textContent = `Day ${currentDay}`;
+    label.textContent = dayNames[currentDay - 1];
+    sub.textContent = '🌟 正在旅行中，享受每一刻！';
+    return currentDay;
+  }
+
+  // 旅行后
+  banner.className = 'countdown-banner countdown-after';
+  num.textContent = '✓';
+  label.textContent = '旅行已结束';
+  sub.textContent = '希望这次新加坡之旅留下了美好回忆 🦁';
+  return -1;
+}
+
+// ════════ 时间字符串转分钟 ════════
+function timeToMinutes(timeStr) {
+  const [h, m] = timeStr.split(':').map(Number);
+  return h * 60 + m;
+}
+
+// ════════ 获取当前时间（分钟） ════════
+function getCurrentMinutes() {
+  const now = getSGTime();
+  return now.getHours() * 60 + now.getMinutes();
+}
+
+// ════════ 更新今日行程提醒 ════════
+function updateNextUp(dayNum) {
+  const card = document.getElementById('nextUpCard');
+  const timeEl = document.getElementById('nextUpTime');
+  const titleEl = document.getElementById('nextUpTitle');
+  const descEl = document.getElementById('nextUpDesc');
+
+  if (dayNum <= 0 || dayNum > 4) {
+    card.classList.remove('visible');
+    return;
+  }
+
+  card.classList.add('visible');
+  const schedule = scheduleData[dayNum];
+  const currentMinutes = getCurrentMinutes();
+
+  // 找到当前或下一个活动
+  let currentActivity = null;
+  let nextActivity = null;
+
+  for (let i = 0; i < schedule.length; i++) {
+    const activityMinutes = timeToMinutes(schedule[i].time);
+    if (activityMinutes <= currentMinutes) {
+      currentActivity = schedule[i];
+      nextActivity = schedule[i + 1] || null;
+    } else if (!nextActivity) {
+      nextActivity = schedule[i];
+      break;
+    }
+  }
+
+  // 更新显示
+  if (currentActivity && !nextActivity) {
+    // 最后一个活动
+    timeEl.textContent = currentActivity.time;
+    titleEl.textContent = currentActivity.title;
+    descEl.textContent = currentActivity.desc + ' （今日行程即将结束）';
+  } else if (nextActivity) {
+    const nextMinutes = timeToMinutes(nextActivity.time);
+    const diffMinutes = nextMinutes - currentMinutes;
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffMins = diffMinutes % 60;
+    
+    timeEl.textContent = nextActivity.time;
+    titleEl.textContent = nextActivity.title;
+    
+    if (diffMinutes <= 0) {
+      descEl.textContent = '就是现在！' + nextActivity.desc;
+    } else if (diffMinutes < 60) {
+      descEl.textContent = `还有 ${diffMins} 分钟 · ${nextActivity.desc}`;
+    } else {
+      descEl.textContent = `还有 ${diffHours}小时${diffMins}分钟 · ${nextActivity.desc}`;
+    }
+  } else {
+    timeEl.textContent = '--:--';
+    titleEl.textContent = '今日暂无行程';
+    descEl.textContent = '好好休息或自由探索吧！';
+  }
+
+  // 更新日期标签状态
+  document.querySelectorAll('.day-tab').forEach(tab => {
+    tab.classList.toggle('active', parseInt(tab.dataset.day) === dayNum);
+  });
+
+  // 高亮当前活动
+  highlightCurrentActivity(dayNum, currentMinutes);
+}
+
+// ════════ 高亮时间轴中的当前活动 ════════
+function highlightCurrentActivity(dayNum, currentMinutes) {
+  // 清除所有高亮
+  document.querySelectorAll('.tl-item').forEach(item => {
+    item.classList.remove('active-item');
+  });
+
+  const schedule = scheduleData[dayNum];
+  if (!schedule) return;
+
+  // 找到当前活动索引
+  let activeIndex = -1;
+  for (let i = 0; i < schedule.length; i++) {
+    const activityMinutes = timeToMinutes(schedule[i].time);
+    const nextActivityMinutes = schedule[i + 1] ? timeToMinutes(schedule[i + 1].time) : 1440;
+    
+    if (currentMinutes >= activityMinutes && currentMinutes < nextActivityMinutes) {
+      activeIndex = i;
+      break;
+    }
+  }
+
+  if (activeIndex >= 0) {
+    // 找到对应的时间轴元素并高亮
+    const dayCard = document.querySelector(`.day${dayNum}`);
+    if (dayCard) {
+      const tlItems = dayCard.querySelectorAll('.tl-item');
+      if (tlItems[activeIndex]) {
+        tlItems[activeIndex].classList.add('active-item');
+        // 滚动到视图中
+        tlItems[activeIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }
+}
+
+// ════════ 日期切换功能 ════════
+function setupDayTabs() {
+  document.querySelectorAll('.day-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const dayNum = parseInt(tab.dataset.day);
+      updateNextUp(dayNum);
+      
+      // 滚动到对应日期
+      const dayCard = document.querySelector(`.day${dayNum}`);
+      if (dayCard) {
+        dayCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+}
+
+// ════════ 初始化 ════════
+function init() {
+  const currentDay = updateCountdown();
+  updateNextUp(currentDay);
+  setupDayTabs();
+  
+  // 每分钟更新一次
+  setInterval(() => {
+    const day = updateCountdown();
+    updateNextUp(day);
+  }, 60000);
+}
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', init);
+
+// ════════ 可折叠内容（互斥展开） ════════
+function toggleCollapse(id) {
+  const content = document.getElementById(id);
+  const isOpen = content.classList.contains('open');
+
+  // 关闭所有折叠项
+  document.querySelectorAll('.collapse-content').forEach(c => c.classList.remove('open'));
+  document.querySelectorAll('.collapse-btn').forEach(b => b.classList.remove('active'));
+
+  // 如果之前是关闭的，则打开当前项
+  if (!isOpen) {
+    content.classList.add('open');
+    content.previousElementSibling.classList.add('active');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  TAB SWITCHING
+// ═══════════════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('page-' + name).classList.add('active');
+  if (name === 'checkin' && map) {
+    setTimeout(function() { map.invalidateSize(); }, 100);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  CHECK-IN: LOCATION DATA
+// ═══════════════════════════════════════════════════════
+var ciLocations = [
+  { id: 'd2-yakun', name: '亚坤咖椰吐司', day: 2, lat: 1.3002, lng: 103.8604 },
+  { id: 'd2-kampong', name: '甘榜格南·苏丹清真寺', day: 2, lat: 1.3003, lng: 103.8623 },
+  { id: 'd2-haji', name: '哈芝巷', day: 2, lat: 1.3005, lng: 103.8601 },
+  { id: 'd2-zamzam', name: 'Zam Zam Restaurant', day: 2, lat: 1.3010, lng: 103.8593 },
+  { id: 'd2-littleindia', name: '小印度', day: 2, lat: 1.3063, lng: 103.8520 },
+  { id: 'd2-seafood', name: '辣椒螃蟹', day: 2, lat: 1.3044, lng: 103.8602 },
+  { id: 'd2-bugis', name: '武吉士夜市', day: 2, lat: 1.3002, lng: 103.8595 },
+  { id: 'd3-friends', name: '老友记展览', day: 3, lat: 1.3045, lng: 103.8335 },
+  { id: 'd3-ion', name: 'ION Orchard', day: 3, lat: 1.3042, lng: 103.8328 },
+  { id: 'd3-orchard', name: '乌节路', day: 3, lat: 1.3041, lng: 103.8318 },
+  { id: 'd3-songfa', name: '松发肉骨茶', day: 3, lat: 1.2907, lng: 103.8464 },
+  { id: 'd3-mbs', name: '滨海湾金沙', day: 3, lat: 1.2838, lng: 103.8600 },
+  { id: 'd3-gardens', name: '滨海湾花园', day: 3, lat: 1.2816, lng: 103.8636 },
+  { id: 'd4-killiney', name: 'Killiney Kopitiam', day: 4, lat: 1.3008, lng: 103.8384 },
+  { id: 'd4-chinatown', name: '牛车水', day: 4, lat: 1.2833, lng: 103.8443 },
+  { id: 'd4-lau', name: '老巴刹', day: 4, lat: 1.2822, lng: 103.8514 },
+];
+
+var ciUser = 1;
+var ciLocation = null;
+var ciPosition = null;
+var ciPhotoData = null;
+var allCheckins = [];
+var map = null;
+var ciMarkers = [];
+
+function renderCiLocationGrid() {
+  var grid = document.getElementById('ciLocationGrid');
+  if (!grid) return;
+  var days = { 2: 'Day 2', 3: 'Day 3', 4: 'Day 4' };
+  grid.innerHTML = ciLocations.map(function(loc) {
+    return '<button class="loc-btn" data-id="' + loc.id + '" onclick="ciSelectLocation(\'' + loc.id + '\')">' +
+      '<span class="loc-name">' + loc.name + '</span>' +
+      '<span class="loc-day">' + days[loc.day] + '</span></button>';
+  }).join('');
+}
+
+function ciSelectLocation(id) {
+  ciLocations.forEach(function(l) { if (l.id === id) ciLocation = l; });
+  var btns = document.querySelectorAll('.loc-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('selected', btns[i].dataset.id === id);
+  }
+}
+
+function ciGetLocation() {
+  var statusEl = document.getElementById('ciLocationStatus');
+  var spinnerEl = document.getElementById('ciSpinner');
+  var textEl = document.getElementById('ciLocationText');
+  if (!navigator.geolocation) {
+    statusEl.className = 'location-status error';
+    spinnerEl.textContent = 'X';
+    textEl.textContent = '浏览器不支持定位';
+    return;
+  }
+  statusEl.className = 'location-status loading';
+  spinnerEl.textContent = '...';
+  textEl.textContent = '正在获取位置...';
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      ciPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      statusEl.className = 'location-status success';
+      spinnerEl.textContent = 'OK';
+      textEl.textContent = '位置已获取';
+    },
+    function() {
+      statusEl.className = 'location-status error';
+      spinnerEl.textContent = '!';
+      textEl.textContent = 'GPS不可用，使用预设地点';
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+function ciSelectUser(num) {
+  ciUser = num;
+  document.getElementById('ciUser1Btn').classList.toggle('selected', num === 1);
+  document.getElementById('ciUser2Btn').classList.toggle('selected', num === 2);
+}
+
+function ciTriggerPhoto() { document.getElementById('ciPhotoInput').click(); }
+
+function ciHandlePhoto(file) {
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    ciPhotoData = e.target.result;
+    var area = document.getElementById('ciPhotoArea');
+    area.classList.add('has-photo');
+    area.innerHTML = '<img src="' + ciPhotoData + '" alt="photo" style="width:100%;height:100%;object-fit:cover;">';
+  };
+  reader.readAsDataURL(file);
+}
+
+function ciRemovePhoto() {
+  ciPhotoData = null;
+  var area = document.getElementById('ciPhotoArea');
+  area.classList.remove('has-photo');
+  area.innerHTML = '<div class="hint"><span class="icon">📷</span>点击拍照或从相册选择</div>';
+  document.getElementById('ciPhotoInput').value = '';
+}
+
+function ciOpenModal() {
+  document.getElementById('ciModal').classList.add('open');
+  ciGetLocation();
+  document.getElementById('ciNoteInput').value = '';
+  ciRemovePhoto();
+  ciLocation = null;
+  document.querySelectorAll('.loc-btn').forEach(function(b) { b.classList.remove('selected'); });
+}
+
+function ciCloseModal() { document.getElementById('ciModal').classList.remove('open'); }
+
+async function ciSubmit() {
+  if (!ciLocation) { ciToast('请先选择一个打卡地点'); return; }
+  var btn = document.getElementById('ciSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = '同步中...';
+  try {
+    var photoUrl = null;
+    if (ciPhotoData) {
+      var fd = new FormData();
+      fd.append('image', ciPhotoData.split(',')[1]);
+      var resp = await fetch('https://api.imgbb.com/1/upload?key=6d6ab71ef12da2b88db0999f4c69a2c3', { method: 'POST', body: fd });
+      var data = await resp.json();
+      if (data.success) photoUrl = data.data.url;
+    }
+    var checkin = {
+      user: ciUser,
+      locationId: ciLocation.id,
+      locationName: ciLocation.name,
+      lat: ciPosition ? ciPosition.lat : ciLocation.lat,
+      lng: ciPosition ? ciPosition.lng : ciLocation.lng,
+      day: ciLocation.day,
+      photoUrl: photoUrl,
+      note: document.getElementById('ciNoteInput').value.trim(),
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+    };
+    await checkinsRef.push(checkin);
+    ciCloseModal();
+    ciToast('打卡成功！');
+  } catch(e) {
+    ciToast('同步失败，请重试');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '打卡';
+  }
+}
+
+function ciLoadCheckins() {
+  checkinsRef.orderByChild('timestamp').on('value', function(snap) {
+    allCheckins = [];
+    snap.forEach(function(c) { allCheckins.unshift({ key: c.key, ...c.val() }); });
+    ciRenderList();
+    ciUpdateStats();
+    ciRenderReport();
+  });
+}
+
+function ciRenderList() {
+  var list = document.getElementById('ciCheckinList');
+  var empty = document.getElementById('ciEmptyState');
+  if (allCheckins.length === 0) {
+    empty.style.display = '';
+    if (list.querySelector('.empty-state') !== empty) { list.innerHTML = ''; list.appendChild(empty); }
+    return;
+  }
+  empty.style.display = 'none';
+  var userNames = ['', 'Regina', 'Sherry'];
+  list.innerHTML = allCheckins.map(function(c) {
+    var time = new Date(c.timestamp).toLocaleString('zh-CN', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' });
+    return '<div class="checkin-item">' +
+      '<div class="item-body">' +
+        '<div class="item-name">📍 ' + c.locationName + ' · ' + userNames[c.user] + '</div>' +
+        '<div class="item-meta"><span>Day ' + c.day + '</span><span>' + time + '</span></div>' +
+        (c.note ? '<div class="item-note">' + c.note + '</div>' : '') +
+        (c.photoUrl ? '<div class="item-photo"><img src="' + c.photoUrl + '" alt="" onclick="ciOpenLightbox(\'' + c.photoUrl + '\')"></div>' : '') +
+      '</div></div>';
+  }).join('');
+}
+
+function ciUpdateStats() {
+  var photos = allCheckins.filter(function(c) { return c.photoUrl; }).length;
+  var users = new Set(allCheckins.map(function(c) { return c.user; })).size;
+  document.getElementById('ci-stat-checkins2').textContent = allCheckins.length;
+  document.getElementById('ci-stat-photos2').textContent = photos;
+  document.getElementById('ci-stat-days').textContent = Math.max(users, allCheckins.length > 0 ? 1 : 0);
+}
+
+function ciInitMap() {
+  if (!document.getElementById('ciReportMap')) return;
+  map = L.map('ciReportMap').setView([1.29, 103.85], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM' }).addTo(map);
+}
+
+function ciRenderReport() {
+  var photos = allCheckins.filter(function(c) { return c.photoUrl; }).length;
+  var days = new Set(allCheckins.map(function(c) { return c.day; })).size;
+  document.getElementById('ci-stat-checkins2').textContent = allCheckins.length;
+  document.getElementById('ci-stat-photos2').textContent = photos;
+  document.getElementById('ci-stat-days').textContent = Math.max(days, allCheckins.length > 0 ? 1 : 0);
+  ciRenderMap();
+  ciRenderPhotoWall();
+  ciRenderTimeline();
+}
+
+function ciRenderMap() {
+  if (!map || !document.getElementById('ciReportMap')) return;
+  ciMarkers.forEach(function(m) { map.removeLayer(m); });
+  ciMarkers = [];
+  var userColors = ['', '#e63946', '#3498db'];
+  allCheckins.forEach(function(c) {
+    var icon = L.divIcon({
+      html: '<div style="background:' + userColors[c.user] + ';color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">' + (c.user === 1 ? 'R' : 'S') + '</div>',
+      className: '', iconSize: [32, 32], iconAnchor: [16, 16]
+    });
+    var marker = L.marker([c.lat, c.lng], { icon: icon }).addTo(map);
+    marker.bindPopup('<b>' + c.locationName + '</b>');
+    ciMarkers.push(marker);
+  });
+  if (allCheckins.length > 1) {
+    L.polyline(allCheckins.map(function(c) { return [c.lat, c.lng]; }), { color: '#e63946', weight: 3, opacity: 0.6, dashArray: '8,6' }).addTo(map);
+  }
+  if (allCheckins.length > 0) {
+    var lats = allCheckins.map(function(c) { return c.lat; });
+    var lngs = allCheckins.map(function(c) { return c.lng; });
+    map.fitBounds([[Math.min.apply(null, lats), Math.min.apply(null, lngs)], [Math.max.apply(null, lats), Math.max.apply(null, lngs)]], { padding: [30, 30] });
+  }
+}
+
+function ciRenderPhotoWall() {
+  var wall = document.getElementById('ciPhotoWall');
+  if (!wall) return;
+  var photos = allCheckins.filter(function(c) { return c.photoUrl; });
+  if (photos.length === 0) {
+    wall.innerHTML = '<div class="empty-state"><div class="icon">🖼️</div><p>还没有照片</p></div>';
+    return;
+  }
+  wall.innerHTML = photos.map(function(p) {
+    return '<div class="photo-thumb"><img src="' + p.photoUrl + '" alt="" onclick="ciOpenLightbox(\'' + p.photoUrl + '\')"></div>';
+  }).join('');
+}
+
+function ciRenderTimeline() {
+  var tl = document.getElementById('ciTimeline');
+  if (!tl) return;
+  var userNames = ['', 'Regina', 'Sherry'];
+  if (allCheckins.length === 0) {
+    tl.innerHTML = '<div class="empty-state"><div class="icon">⏰</div><p>还没有打卡记录</p></div>';
+    return;
+  }
+  tl.innerHTML = allCheckins.map(function(c) {
+    var time = new Date(c.timestamp).toLocaleString('zh-CN', { hour:'2-digit', minute:'2-digit' });
+    return '<div style="padding:8px 0 8px 40px;position:relative;border-left:2px solid #e0e0e0;margin-left:10px;">' +
+      '<div style="position:absolute;left:-8px;top:8px;width:14px;height:14px;background:var(--red);border-radius:50%;border:2px solid white;"></div>' +
+      '<div style="font-size:11px;color:#888;">' + time + ' · Day ' + c.day + '</div>' +
+      '<div style="font-size:14px;font-weight:600;">📍 ' + c.locationName + '</div>' +
+      '<div style="font-size:11px;color:var(--blue);">' + (c.user === 1 ? 'Regina' : 'Sherry') + '</div>' +
+      (c.note ? '<div style="font-size:12px;color:#666;margin-top:4px;">' + c.note + '</div>' : '') +
+      (c.photoUrl ? '<div style="margin-top:6px;border-radius:8px;overflow:hidden;max-width:180px;"><img src="' + c.photoUrl + '" alt="" style="width:100%;display:block;border-radius:8px;" onclick="ciOpenLightbox(\'' + c.photoUrl + '\')"></div>' : '') +
+    '</div>';
+  }).join('');
+}
+
+function ciOpenLightbox(url) {
+  document.getElementById('ciLightboxImg').src = url;
+  document.getElementById('ciLightbox').classList.add('open');
+}
+function ciCloseLightbox() { document.getElementById('ciLightbox').classList.remove('open'); }
+
+function ciToast(msg) {
+  var t = document.getElementById('ciToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
+
+async function ciExportPDF() {
+  var el = document.getElementById('page-checkin');
+  var opt = {
+    margin: 10,
+    filename: '新加坡旅行打卡报告_2026.pdf',
+    image: { type: 'jpeg', quality: 0.85 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+  ciToast('正在生成 PDF...');
+  await html2pdf().set(opt).from(el).save();
+  ciToast('PDF 已下载！');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  init();
+  renderCiLocationGrid();
+  ciLoadCheckins();
+  ciGetLocation();
+  ciInitMap();
+});
+</script>
+
+<!-- Leaflet + Firebase + html2pdf -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+var firebaseConfig = {
+  apiKey: "AIzaSyC1CwK-QEIyEVv8wshx7ERFXPz9R6NqoSg",
+  authDomain: "sg-trip-2026.firebaseapp.com",
+  databaseURL: "https://sg-trip-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "sg-trip-2026",
+  storageBucket: "sg-trip-2026.firebasestorage.app",
+  messagingSenderId: "805691422387",
+  appId: "1:805691422387:web:08113ab0fcb881ff93a2c6"
+};
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
+var checkinsRef = db.ref('sg-trip-2026/checkins');
+</script>
+
+<!-- ════════ CHECK-IN PAGE ════════ -->
+</div><!-- end #page-guide -->
+
+<div id="page-checkin" class="page-section">
+<div class="container">
+
+  <div class="checkin-header">
+    <h2>📍 旅行打卡</h2>
+    <p>5月1日 – 5月4日 · 两人同行</p>
+    <div class="checkin-stats">
+      <div class="checkin-stat"><div class="num" id="ci-stat-checkins2">0</div><div class="label">打卡次数</div></div>
+      <div class="checkin-stat"><div class="num" id="ci-stat-photos2">0</div><div class="label">照片</div></div>
+      <div class="checkin-stat"><div class="num" id="ci-stat-days">0</div><div class="label">打卡天数</div></div>
+    </div>
+  </div>
+
+  <div class="report-section">
+    <h3>🗺️ 打卡轨迹</h3>
+    <div id="ciReportMap"></div>
+  </div>
+
+  <div class="report-section">
+    <h3>📸 照片墙</h3>
+    <div class="photo-wall" id="ciPhotoWall">
+      <div class="empty-state"><div class="icon">🖼️</div><p>还没有照片</p></div>
+    </div>
+  </div>
+
+  <div class="report-section">
+    <h3>⏱️ 打卡时间轴</h3>
+    <div id="ciTimeline">
+      <div class="empty-state"><div class="icon">⏰</div><p>还没有打卡记录</p></div>
+    </div>
+  </div>
+
+  <div class="checkin-list" id="ciCheckinList">
+    <div class="empty-state" id="ciEmptyState" style="display:none;">
+      <div class="icon">📸</div><p>还没有打卡记录</p><p>点击右下角按钮开始打卡！</p>
+    </div>
+  </div>
+
+  <button class="export-btn" onclick="ciExportPDF()">📄 导出 PDF 报告</button>
+  <div style="height:80px;"></div>
+</div>
+</div><!-- end #page-checkin -->
+
+<!-- ════════ FAB BUTTON ════════ -->
+<button class="checkin-fab" onclick="ciOpenModal()">+</button>
+
+<!-- ════════ CHECK-IN MODAL ════════ -->
+<div class="modal-overlay" id="ciModal" onclick="if(event.target===this)ciCloseModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📍 新打卡</div>
+
+    <div class="user-selector">
+      <button class="user-btn selected" id="ciUser1Btn" onclick="ciSelectUser(1)">Regina</button>
+      <button class="user-btn" id="ciUser2Btn" onclick="ciSelectUser(2)">Sherry</button>
+    </div>
+
+    <div class="form-group">
+      <label>📍 打卡地点</label>
+      <div class="location-grid" id="ciLocationGrid"></div>
+    </div>
+
+    <div class="form-group">
+      <label>📷 照片（可选）</label>
+      <div class="photo-area" id="ciPhotoArea" onclick="ciTriggerPhoto()">
+        <div class="hint"><span class="icon">📷</span>点击拍照或从相册选择</div>
+      </div>
+      <input type="file" id="ciPhotoInput" accept="image/*" style="display:none;" onchange="ciHandlePhoto(this.files[0])">
+    </div>
+
+    <div class="form-group">
+      <label>📝 备注（可选）</label>
+      <textarea id="ciNoteInput" rows="2" placeholder="这一刻想说什么..."></textarea>
+    </div>
+
+    <div class="location-status loading" id="ciLocationStatus">
+      <span id="ciSpinner">...</span>
+      <span id="ciLocationText">正在获取位置...</span>
+    </div>
+
+    <button class="submit-btn" id="ciSubmitBtn" onclick="ciSubmit()">✈️ 打卡</button>
+    <button class="submit-btn" style="background:#888;margin-top:8px;" onclick="ciCloseModal()">取消</button>
+  </div>
+</div>
+
+<!-- ════════ LIGHTBOX ════════ -->
+<div class="lightbox" id="ciLightbox" onclick="ciCloseLightbox()">
+  <button class="lightbox-close" onclick="ciCloseLightbox()">×</button>
+  <img id="ciLightboxImg" src="" alt="">
+</div>
+
+<!-- ════════ TOAST ════════ -->
+<div class="toast" id="ciToast"></div>
+
+</body>
+</html>
