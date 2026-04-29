@@ -221,6 +221,35 @@
       font-weight: 600;
       cursor: pointer;
     }
+    .pagination {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pagination .page-btn {
+      border: 1px solid #d8dde3;
+      background: #fff;
+      color: #334155;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .pagination .page-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .pagination .page-info {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+      min-width: 78px;
+      text-align: center;
+    }
 
     /* Modal */
     .modal-overlay {
@@ -437,7 +466,7 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    .photo-wall .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-wall .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .export-btn {
       width: 100%;
@@ -2131,6 +2160,8 @@ var ciLocation = null;
 var ciPosition = null;
 var ciPhotoData = null;
 var allCheckins = [];
+var ciCurrentPage = 1;
+var ciPageSize = 10;
 var map = null;
 var ciMarkers = [];
 var ciAuthReady = false;
@@ -2153,6 +2184,13 @@ function ciSelectLocation(id) {
   for (var i = 0; i < btns.length; i++) {
     btns[i].classList.toggle('selected', btns[i].dataset.id === id);
   }
+  var customEl = document.getElementById('ciCustomLocationName');
+  if (customEl && ciLocation) customEl.value = '';
+}
+
+function ciClearPresetLocation() {
+  ciLocation = null;
+  document.querySelectorAll('.loc-btn').forEach(function(b) { b.classList.remove('selected'); });
 }
 
 function ciGetLocation() {
@@ -2216,6 +2254,8 @@ function ciOpenModal() {
   document.getElementById('ciModal').classList.add('open');
   ciGetLocation();
   document.getElementById('ciNoteInput').value = '';
+  document.getElementById('ciCustomLocationName').value = '';
+  document.getElementById('ciCustomDay').value = '2';
   ciRemovePhoto();
   ciLocation = null;
   document.querySelectorAll('.loc-btn').forEach(function(b) { b.classList.remove('selected'); });
@@ -2262,7 +2302,19 @@ function ciCompressDataUrl(dataUrl, maxW, quality) {
 }
 
 async function ciSubmit() {
-  if (!ciLocation) { ciToast('请先选择一个打卡地点'); return; }
+  var customName = (document.getElementById('ciCustomLocationName').value || '').trim();
+  var customDay = parseInt(document.getElementById('ciCustomDay').value || '2', 10);
+  var finalLocation = ciLocation;
+  if (!finalLocation && customName) {
+    finalLocation = {
+      id: 'custom-' + Date.now(),
+      name: customName,
+      day: (customDay >= 1 && customDay <= 4) ? customDay : 2,
+      lat: 1.29027,
+      lng: 103.851959
+    };
+  }
+  if (!finalLocation) { ciToast('请选择预设地点，或填写自定义地点'); return; }
   if (!ciAuthReady) {
     ciToast('登录尚未完成，请稍后再试');
     try {
@@ -2275,18 +2327,21 @@ async function ciSubmit() {
   btn.textContent = '同步中...';
   try {
     var photoUrl = null;
+    var photoThumb = null;
     if (ciPhotoData) {
       photoUrl = await ciCompressDataUrl(ciPhotoData, 1080, 0.68);
+      photoThumb = await ciCompressDataUrl(ciPhotoData, 320, 0.6);
     }
     var checkin = {
       uid: ciAuthUid,
       user: ciUser,
-      locationId: ciLocation.id,
-      locationName: ciLocation.name,
-      lat: ciPosition ? ciPosition.lat : ciLocation.lat,
-      lng: ciPosition ? ciPosition.lng : ciLocation.lng,
-      day: ciLocation.day,
+      locationId: finalLocation.id,
+      locationName: finalLocation.name,
+      lat: ciPosition ? ciPosition.lat : finalLocation.lat,
+      lng: ciPosition ? ciPosition.lng : finalLocation.lng,
+      day: finalLocation.day,
       photoUrl: photoUrl,
+      photoThumb: photoThumb,
       note: document.getElementById('ciNoteInput').value.trim(),
       timestamp: firebase.database.ServerValue.TIMESTAMP,
     };
@@ -2320,6 +2375,7 @@ function ciLoadCheckins() {
           lng: val.lng,
           day: val.day || 0,
           photoUrl: val.photoUrl || null,
+          photoThumb: val.photoThumb || null,
           note: val.note || '',
           timestamp: val.timestamp || 0
         });
@@ -2338,14 +2394,22 @@ function ciLoadCheckins() {
 function ciRenderList() {
   var list = document.getElementById('ciCheckinList');
   var empty = document.getElementById('ciEmptyState');
+  var pager = document.getElementById('ciPagination');
   if (allCheckins.length === 0) {
     empty.style.display = '';
     if (list.querySelector('.empty-state') !== empty) { list.innerHTML = ''; list.appendChild(empty); }
+    if (pager) pager.style.display = 'none';
     return;
   }
   empty.style.display = 'none';
   var userNames = ['', 'Regina', 'Sherry'];
-  list.innerHTML = allCheckins.map(function(c) {
+  var totalPages = Math.max(1, Math.ceil(allCheckins.length / ciPageSize));
+  if (ciCurrentPage > totalPages) ciCurrentPage = totalPages;
+  if (ciCurrentPage < 1) ciCurrentPage = 1;
+  var start = (ciCurrentPage - 1) * ciPageSize;
+  var end = start + ciPageSize;
+  var pageItems = allCheckins.slice(start, end);
+  list.innerHTML = pageItems.map(function(c) {
     var ts = Number(c.timestamp || 0);
     var time = ts ? new Date(ts).toLocaleString('zh-CN', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' }) : '时间未知';
     return '<div class="checkin-item">' +
@@ -2357,6 +2421,18 @@ function ciRenderList() {
         '<div class="item-actions"><button class="delete-btn" onclick="ciDeleteCheckin(\'' + c.key + '\')">删除</button></div>' +
       '</div></div>';
   }).join('');
+  if (pager) {
+    pager.style.display = 'flex';
+    pager.innerHTML =
+      '<button class="page-btn" ' + (ciCurrentPage <= 1 ? 'disabled' : '') + ' onclick="ciSetPage(' + (ciCurrentPage - 1) + ')">上一页</button>' +
+      '<span class="page-info">' + ciCurrentPage + ' / ' + totalPages + '</span>' +
+      '<button class="page-btn" ' + (ciCurrentPage >= totalPages ? 'disabled' : '') + ' onclick="ciSetPage(' + (ciCurrentPage + 1) + ')">下一页</button>';
+  }
+}
+
+function ciSetPage(page) {
+  ciCurrentPage = page;
+  ciRenderList();
 }
 
 async function ciDeleteCheckin(key) {
@@ -2440,7 +2516,8 @@ function ciRenderPhotoWall() {
     return;
   }
   wall.innerHTML = photos.map(function(p) {
-    return '<div class="photo-thumb"><img src="' + p.photoUrl + '" alt="" onclick="ciOpenLightbox(\'' + p.photoUrl + '\')"></div>';
+    var thumb = p.photoThumb || p.photoUrl;
+    return '<div class="photo-thumb"><img loading="lazy" decoding="async" src="' + thumb + '" alt="" onclick="ciOpenLightbox(\'' + p.photoUrl + '\')"></div>';
   }).join('');
 }
 
@@ -2583,6 +2660,7 @@ var checkinsRef = db.ref('sg-trip-2026/checkins');
       <div class="icon">📸</div><p>还没有打卡记录</p><p>点击右下角按钮开始打卡！</p>
     </div>
   </div>
+  <div class="pagination" id="ciPagination" style="display:none;"></div>
 
   <button class="export-btn" onclick="ciExportPDF()">📄 导出 PDF 报告</button>
   <div style="height:80px;"></div>
@@ -2606,6 +2684,20 @@ var checkinsRef = db.ref('sg-trip-2026/checkins');
     <div class="form-group">
       <label>📍 打卡地点</label>
       <div class="location-grid" id="ciLocationGrid"></div>
+    </div>
+
+    <div class="form-group">
+      <label>✨ 自定义地点（计划外发现）</label>
+      <input id="ciCustomLocationName" type="text" placeholder="例如：偶遇咖啡店 / 临时夜市">
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <select id="ciCustomDay" style="flex:1;padding:12px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:14px;background:white;">
+          <option value="1">Day 1</option>
+          <option value="2">Day 2</option>
+          <option value="3">Day 3</option>
+          <option value="4">Day 4</option>
+        </select>
+        <button type="button" class="submit-btn" style="margin-top:0;width:auto;padding:10px 14px;font-size:13px;" onclick="ciClearPresetLocation()">清空预设</button>
+      </div>
     </div>
 
     <div class="form-group">
