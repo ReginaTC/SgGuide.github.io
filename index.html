@@ -1703,12 +1703,13 @@ function updateCountdown() {
   if (now < tripStart) {
     const diff = tripStart - now;
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const calendarDays = Math.ceil((new Date(tripStart.getFullYear(), tripStart.getMonth(), tripStart.getDate()) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     
     banner.className = 'countdown-banner countdown-pretrip';
-    num.textContent = days;
-    label.textContent = days <= 0 ? '就是今天！' : `距离出发还有 ${days} 天`;
-    sub.textContent = days <= 0 ? `还有 ${hours} 小时就要起飞啦 ✈️` : '准备好行李，新加坡见！';
+    num.textContent = calendarDays;
+    label.textContent = calendarDays <= 0 ? '就是今天！' : `距离出发还有 ${calendarDays} 天`;
+    sub.textContent = calendarDays <= 0 ? `还有 ${hours} 小时就要起飞啦 ✈️` : ('还有 ' + Math.max(1, Math.ceil(diff / (1000 * 60 * 60))) + ' 小时，准备好行李，新加坡见！');
     return 0;
   }
 
