@@ -373,10 +373,61 @@
       padding: 0 20px;
     }
 
+    /* ───── COLLAPSE BUTTONS ───── */
+    .collapse-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .collapse-btn {
+      flex: 1;
+      min-width: 140px;
+      background: linear-gradient(135deg, #0f3460, #16213e);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(15, 52, 96, 0.3);
+    }
+    .collapse-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(15, 52, 96, 0.4);
+    }
+    .collapse-btn.active {
+      background: linear-gradient(135deg, #118ab2, #06d6a0);
+    }
+    .collapse-arrow {
+      transition: transform 0.3s;
+      font-size: 12px;
+    }
+    .collapse-btn.active .collapse-arrow {
+      transform: rotate(180deg);
+    }
+    .collapse-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
+      opacity: 0;
+    }
+    .collapse-content.open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+
     @media (max-width: 600px) {
       .hero { padding: 40px 16px 60px; }
       .tl-time { width: 56px; font-size: 12px; }
       .tl-title { font-size: 14px; }
+      .collapse-buttons { flex-direction: column; }
+      .collapse-btn { width: 100%; }
     }
   </style>
 </head>
@@ -427,86 +478,61 @@
     <h2>出行基本信息</h2>
   </div>
 
-  <div class="card">
-    <p style="font-weight:700;font-size:15px;margin-bottom:12px;color:var(--navy)">🛫 去程航班</p>
-    <div class="info-grid">
-      <div class="info-item"><div class="info-label">航班</div><div class="info-value">TR983</div></div>
-      <div class="info-item"><div class="info-label">日期</div><div class="info-value">5月1日（周五）</div></div>
-      <div class="info-item"><div class="info-label">出发</div><div class="info-value">20:45 香港国际机场 T1</div></div>
-      <div class="info-item"><div class="info-label">到达</div><div class="info-value">00:45+1 新加坡樟宜机场 T1</div></div>
-    </div>
-    <p style="font-weight:700;font-size:15px;margin:12px 0;color:var(--navy)">🛬 回程航班</p>
-    <div class="info-grid">
-      <div class="info-item"><div class="info-label">航班</div><div class="info-value">TR982</div></div>
-      <div class="info-item"><div class="info-label">日期</div><div class="info-value">5月4日（周一）</div></div>
-      <div class="info-item"><div class="info-label">出发</div><div class="info-value">15:25 樟宜机场 T1</div></div>
-      <div class="info-item"><div class="info-label">到达</div><div class="info-value">19:45 香港国际机场 T1</div></div>
-    </div>
-    <div class="notice">
-      <strong>⚠️ 乘机提示</strong>
-      TR983 / TR982 为捷星亚洲航空，廉航行李额请提前确认，建议提前2小时抵达机场办理值机。建议在Fever官网提前购好老友记展览票，现场排队时间可省。
-    </div>
+  <!-- 可收起的按钮 -->
+  <div class="collapse-buttons">
+    <button class="collapse-btn" onclick="toggleCollapse('flightInfo')">
+      <span>✈️ 航班信息</span>
+      <span class="collapse-arrow" id="flightArrow">▼</span>
+    </button>
+    <button class="collapse-btn" onclick="toggleCollapse('hotelInfo')">
+      <span>🏨 酒店信息</span>
+      <span class="collapse-arrow" id="hotelArrow">▼</span>
+    </button>
   </div>
 
-  <div class="card green">
-    <p style="font-weight:700;font-size:15px;margin-bottom:12px;color:var(--navy)">🏨 酒店信息</p>
-    <div class="info-grid">
-      <div class="info-item"><div class="info-label">酒店名称</div><div class="info-value">米梧槽酒店<br><span style="font-size:12px;font-weight:400;">Hotel Mi Rochor</span></div></div>
-      <div class="info-item"><div class="info-label">入住 / 退房</div><div class="info-value">5月1日 → 5月4日</div></div>
-      <div class="info-item"><div class="info-label">房型</div><div class="info-value">高级大床房带天井（2人）</div></div>
-      <div class="info-item"><div class="info-label">地址</div><div class="info-value">89 Short St, Singapore</div></div>
-      <div class="info-item"><div class="info-label">电话</div><div class="info-value">+6566698822</div></div>
-      <div class="info-item"><div class="info-label">位置优势</div><div class="info-value">步行3min至武吉士街购物中心</div></div>
-    </div>
-    <div class="tips-box" style="margin-top:0;">
-      <h4>📍 酒店位置说明</h4>
-      <ul>
-        <li>紧邻 <strong>Bugis（武吉士）</strong>地铁站，出行极便利</li>
-        <li>步行可达小印度、甘榜格南（阿拉伯区）等特色街区</li>
-        <li>距滨海湾金沙约3公里，地铁15分钟可达</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ════════ 从机场到酒店 ════════ -->
-  <div class="section-header">
-    <div class="section-icon">🚇</div>
-    <h2>机场 → 酒店交通</h2>
-  </div>
-
-  <div class="card orange">
-    <p style="font-weight:700;font-size:15px;margin-bottom:4px;color:var(--navy)">去程：深夜1点抵达 · 建议打车</p>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">TR983 抵达时间 00:45，已过地铁末班车，建议以下方式</p>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-time">方案 A</div>
-        <div class="tl-dot orange"></div>
-        <div class="tl-content">
-          <div class="tl-title">🚗 Grab / Taxi（推荐）</div>
-          <div class="tl-desc">机场T1出口直接叫Grab（新加坡版滴滴），车程约25分钟，深夜预计 <strong>SGD 25–35</strong>。Grab在新加坡非常普遍，提前安装好App并绑定支付。</div>
-        </div>
+  <!-- 航班信息（可收起） -->
+  <div id="flightInfo" class="collapse-content">
+    <div class="card">
+      <p style="font-weight:700;font-size:15px;margin-bottom:12px;color:var(--navy)">🛫 去程航班</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">航班</div><div class="info-value">TR983</div></div>
+        <div class="info-item"><div class="info-label">日期</div><div class="info-value">5月1日（周五）</div></div>
+        <div class="info-item"><div class="info-label">出发</div><div class="info-value">20:45 香港国际机场 T1</div></div>
+        <div class="info-item"><div class="info-label">到达</div><div class="info-value">00:45+1 新加坡樟宜机场 T1</div></div>
       </div>
-      <div class="tl-item">
-        <div class="tl-time">方案 B</div>
-        <div class="tl-dot"></div>
-        <div class="tl-content">
-          <div class="tl-title">🚌 机场班车 Airport Shuttle</div>
-          <div class="tl-desc">机场有共乘班车服务，约 <strong>SGD 9–10/人</strong>，需预约，深夜班次较少，建议提前查询。</div>
-        </div>
+      <p style="font-weight:700;font-size:15px;margin:12px 0;color:var(--navy)">🛬 回程航班</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">航班</div><div class="info-value">TR982</div></div>
+        <div class="info-item"><div class="info-label">日期</div><div class="info-value">5月4日（周一）</div></div>
+        <div class="info-item"><div class="info-label">出发</div><div class="info-value">15:25 樟宜机场 T1</div></div>
+        <div class="info-item"><div class="info-label">到达</div><div class="info-value">19:45 香港国际机场 T1</div></div>
+      </div>
+      <div class="notice">
+        <strong>⚠️ 乘机提示</strong>
+        TR983 / TR982 为捷星亚洲航空，廉航行李额请提前确认，建议提前2小时抵达机场办理值机。建议在Fever官网提前购好老友记展览票，现场排队时间可省。
       </div>
     </div>
-    <p style="font-weight:700;font-size:15px;margin:20px 0 4px;color:var(--navy)">回程：下午出发 · 地铁轻松去</p>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-time">~ 11:30</div>
-        <div class="tl-dot green"></div>
-        <div class="tl-content">
-          <div class="tl-title">🚇 武吉士站 → 樟宜机场（MRT）</div>
-          <div class="tl-desc">
-            乘坐 <strong>东西线（绿线）</strong>，在 <strong>Bugis站</strong> 上车→ <strong>Tanah Merah站</strong> 换乘机场线 → <strong>Changi Airport站</strong>，全程约30分钟，费用约 <strong>SGD 2–2.5</strong>。
-            <br>T1到达站需乘免费Skytrain到T1。航班15:25，<strong>建议13:00前离酒店</strong>，预留充裕时间。
-          </div>
-        </div>
+  </div>
+
+  <!-- 酒店信息（可收起） -->
+  <div id="hotelInfo" class="collapse-content">
+    <div class="card green">
+      <p style="font-weight:700;font-size:15px;margin-bottom:12px;color:var(--navy)">🏨 酒店信息</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">酒店名称</div><div class="info-value">米梧槽酒店<br><span style="font-size:12px;font-weight:400;">Hotel Mi Rochor</span></div></div>
+        <div class="info-item"><div class="info-label">入住 / 退房</div><div class="info-value">5月1日 → 5月4日</div></div>
+        <div class="info-item"><div class="info-label">房型</div><div class="info-value">高级大床房带天井（2人）</div></div>
+        <div class="info-item"><div class="info-label">地址</div><div class="info-value">89 Short St, Singapore</div></div>
+        <div class="info-item"><div class="info-label">电话</div><div class="info-value">+6566698822</div></div>
+        <div class="info-item"><div class="info-label">位置优势</div><div class="info-value">步行3min至武吉士街购物中心</div></div>
+      </div>
+      <div class="tips-box" style="margin-top:0;">
+        <h4>📍 酒店位置说明</h4>
+        <ul>
+          <li>紧邻 <strong>Bugis（武吉士）</strong>地铁站，出行极便利</li>
+          <li>步行可达小印度、甘榜格南（阿拉伯区）等特色街区</li>
+          <li>距滨海湾金沙约3公里，地铁15分钟可达</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -528,7 +554,7 @@
     <div class="day-body">
       <div class="notice" style="margin-top:16px;">
         <strong>📌 今日说明</strong>
-        去程航班 20:45 从香港出发，深夜 00:45+1 抵达新加坡。今晚入住酒店即可，无需安排观光。
+        去程航班 20:45 从香港出发，深夜 00:45+1 抵达新加坡。已过地铁末班车，叫 Grab 直接到酒店入住即可。
       </div>
       <div class="timeline">
         <div class="tl-item">
@@ -543,8 +569,11 @@
           <div class="tl-time">00:45+1</div>
           <div class="tl-dot orange"></div>
           <div class="tl-content">
-            <div class="tl-title">🛬 抵达樟宜机场 T1</div>
-            <div class="tl-desc">入境、取行李，叫 <strong>Grab</strong> 前往酒店，约25分钟。<br><span class="tl-badge badge-tip">提示</span>樟宜机场本身就是著名景点，若精力尚可可稍微逛逛室内瀑布（24小时开放）。</div>
+            <div class="tl-title">🛬 抵达樟宜机场 T1 → 🚗 Grab去酒店</div>
+            <div class="tl-desc">
+              入境、取行李，机场T1出口直接叫 <strong>Grab</strong>（新加坡版滴滴），车程约25分钟，深夜预计 <strong>SGD 25–35</strong>。<br>
+              <span class="tl-badge badge-transport">交通</span>已过地铁末班车，建议 Grab 或 Taxi
+            </div>
           </div>
         </div>
         <div class="tl-item">
@@ -803,8 +832,12 @@
           <div class="tl-time">13:00</div>
           <div class="tl-dot green"></div>
           <div class="tl-content">
-            <div class="tl-title">🚇 前往机场</div>
-            <div class="tl-desc">从<strong>Bugis站</strong>乘东西线→ Tanah Merah→ Changi Airport，全程约30分钟。抵达T3乘Skytrain至T1（免费，约5分钟）。<br><span class="tl-badge badge-tip">提示</span>TR982 15:25 出发，廉航建议 <strong>13:25前抵达机场</strong>，以便顺利办理值机与安检。</div>
+            <div class="tl-title">🚇 前往机场（MRT地铁直达）</div>
+            <div class="tl-desc">
+              从<strong>Bugis站</strong>乘东西线→ <strong>Tanah Merah站</strong> 换乘机场线 → <strong>Changi Airport站</strong>，全程约30分钟，费用约 <strong>SGD 2–2.5</strong>。<br>
+              抵达T3后乘免费Skytrain至T1（约5分钟）。<br>
+              <span class="tl-badge badge-transport">交通</span>TR982 15:25出发，建议 <strong>13:25前抵达机场</strong>
+            </div>
           </div>
         </div>
         <div class="tl-item">
@@ -1173,6 +1206,21 @@ function init() {
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', init);
+
+// ════════ 可折叠内容 ════════
+function toggleCollapse(id) {
+  const content = document.getElementById(id);
+  const btn = content.previousElementSibling;
+  const isOpen = content.classList.contains('open');
+  
+  if (isOpen) {
+    content.classList.remove('open');
+    btn.classList.remove('active');
+  } else {
+    content.classList.add('open');
+    btn.classList.add('active');
+  }
+}
 </script>
 
 </body>
