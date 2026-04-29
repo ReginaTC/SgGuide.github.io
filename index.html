@@ -2248,21 +2248,7 @@ async function ciSubmit() {
   try {
     var photoUrl = null;
     if (ciPhotoData) {
-      try {
-        var fd = new FormData();
-        fd.append('image', ciPhotoData.split(',')[1]);
-        var resp = await fetch('https://api.imgbb.com/1/upload?key=6d6ab71ef12da2b88db0999f4c69a2c3', { method: 'POST', body: fd });
-        var data = await resp.json();
-        if (data && data.success && data.data && data.data.url) {
-          photoUrl = data.data.url;
-        } else {
-          photoUrl = await ciCompressDataUrl(ciPhotoData, 1280, 0.72);
-          ciToast('图床上传失败，已保存为本地压缩图');
-        }
-      } catch (imgErr) {
-        photoUrl = await ciCompressDataUrl(ciPhotoData, 1280, 0.72);
-        ciToast('图床上传失败，已保存为本地压缩图');
-      }
+      photoUrl = await ciCompressDataUrl(ciPhotoData, 1080, 0.68);
     }
     var checkin = {
       user: ciUser,
