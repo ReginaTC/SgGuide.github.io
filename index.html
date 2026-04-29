@@ -108,6 +108,138 @@
     .info-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
     .info-value { font-size: 15px; font-weight: 600; margin-top: 4px; color: var(--navy); }
 
+    /* ───── COUNTDOWN BANNER ───── */
+    .countdown-banner {
+      background: linear-gradient(135deg, #0f3460, #16213e);
+      color: white;
+      text-align: center;
+      padding: 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .countdown-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='20'/%3E%3C/svg%3E") center/cover;
+    }
+    .countdown-pretrip { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+    .countdown-intrip  { background: linear-gradient(135deg, #1b4332, #2d6a4f); }
+    .countdown-after   { background: linear-gradient(135deg, #6c757d, #495057); }
+    .countdown-num {
+      font-size: clamp(48px, 12vw, 80px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .countdown-label {
+      font-size: 15px;
+      opacity: .85;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .countdown-sub {
+      font-size: 13px;
+      opacity: .7;
+      margin-top: 8px;
+    }
+    .countdown-today-label {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .countdown-current {
+      font-size: 14px;
+      opacity: .9;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ───── NEXT UP CARD ───── */
+    .next-up-card {
+      background: linear-gradient(135deg, #1b4332, #2d6a4f);
+      color: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      display: none;
+    }
+    .next-up-card.visible { display: block; }
+    .next-up-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='150' cy='50' r='80' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") right top/cover;
+    }
+    .next-up-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .next-up-pulse {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #06d6a0;
+      box-shadow: 0 0 0 0 rgba(6,214,160,.7);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(6,214,160,.7); }
+      70%  { box-shadow: 0 0 0 10px rgba(6,214,160,0); }
+      100% { box-shadow: 0 0 0 0 rgba(6,214,160,0); }
+    }
+    .next-up-label { font-size: 12px; opacity: .8; text-transform: uppercase; letter-spacing: 1px; }
+    .next-up-time  { font-size: 13px; opacity: .7; margin-top: 4px; }
+    .next-up-title { font-size: 20px; font-weight: 700; margin: 8px 0 4px; }
+    .next-up-desc  { font-size: 13px; opacity: .85; line-height: 1.5; }
+    .next-up-daytabs {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .day-tab {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.3);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .day-tab:hover { background: rgba(255,255,255,.3); }
+    .day-tab.active { background: rgba(255,255,255,.9); color: #1b4332; }
+
+    /* ───── ACTIVE TIMELINE ITEM ───── */
+    .tl-item.active-item {
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+      border-radius: 10px;
+      padding: 12px 16px !important;
+      border: 2px solid #06d6a0 !important;
+      position: relative;
+    }
+    .tl-item.active-item .tl-dot {
+      width: 14px; height: 14px;
+      box-shadow: 0 0 0 4px rgba(6,214,160,.3);
+      background: #06d6a0 !important;
+    }
+    .tl-item.active-item::after {
+      content: '▶';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #06d6a0;
+      font-size: 12px;
+    }
+
     /* ───── DAY BLOCKS ───── */
     .day-card {
       background: var(--card-bg);
@@ -250,6 +382,13 @@
 </head>
 <body>
 
+<!-- ════════ COUNTDOWN BANNER ════════ -->
+<div class="countdown-banner" id="countdownBanner">
+  <div class="countdown-num" id="countdownNum">--</div>
+  <div class="countdown-label" id="countdownLabel">加载中...</div>
+  <div class="countdown-sub" id="countdownSub"></div>
+</div>
+
 <!-- ════════ HERO ════════ -->
 <div class="hero">
   <span class="hero-emoji">🇸🇬</span>
@@ -264,6 +403,23 @@
 </div>
 
 <div class="container">
+
+  <!-- ════════ 今日行程提醒 ════════ -->
+  <div class="next-up-card" id="nextUpCard">
+    <div class="next-up-header">
+      <div class="next-up-pulse"></div>
+      <span class="next-up-label">当前行程</span>
+    </div>
+    <div class="next-up-time" id="nextUpTime">--:--</div>
+    <div class="next-up-title" id="nextUpTitle">--</div>
+    <div class="next-up-desc" id="nextUpDesc">--</div>
+    <div class="next-up-daytabs" id="dayTabs">
+      <button class="day-tab" data-day="1">Day 1</button>
+      <button class="day-tab" data-day="2">Day 2</button>
+      <button class="day-tab" data-day="3">Day 3</button>
+      <button class="day-tab" data-day="4">Day 4</button>
+    </div>
+  </div>
 
   <!-- ════════ 航班 & 酒店信息 ════════ -->
   <div class="section-header">
@@ -779,6 +935,245 @@
   <p>✈️ 祝旅途愉快，行程轻松，老友记展不要错过！🛋️</p>
   <p style="margin-top:6px;font-size:12px;">本攻略根据2026年5月实际航班及酒店信息定制 · 景点信息请出发前再次核实</p>
 </footer>
+
+<script>
+// ════════ 行程数据 ════════
+const tripStart = new Date('2026-05-01T00:00:00+08:00'); // 新加坡时间
+const tripEnd = new Date('2026-05-04T23:59:59+08:00');
+
+const scheduleData = {
+  1: [
+    { time: '20:45', title: '✈️ 香港国际机场 T1 出发', desc: 'TR983 起飞，飞行约3.5小时', type: 'transport' },
+    { time: '00:45', title: '🛬 抵达樟宜机场 T1', desc: '入境、取行李，叫Grab前往酒店', type: 'transport' },
+    { time: '02:00', title: '🏨 入住 Hotel Mi Rochor', desc: '办理入住，好好休息', type: 'hotel' }
+  ],
+  2: [
+    { time: '09:00', title: '☕ 早餐：亚坤咖椰吐司', desc: '新加坡经典早餐，咖椰吐司+半熟蛋+咖啡', type: 'food' },
+    { time: '10:00', title: '🕌 甘榜格南 · 苏丹清真寺 & 哈芝巷', desc: '最美打卡街道，彩绘涂鸦+独立小店', type: 'sight' },
+    { time: '11:30', title: '🛍️ 阿拉伯街购物闲逛', desc: '香料店、布料店和特色咖啡馆', type: 'sight' },
+    { time: '13:00', title: '🍜 午餐：Zam Zam Restaurant', desc: '百年老店，印巴风味Murtabak和Biryani', type: 'food' },
+    { time: '14:30', title: '🌸 小印度（Little India）漫步', desc: '鲜花街、彩色门廊、芥末黄咖喱香气', type: 'sight' },
+    { time: '16:30', title: '🏨 回酒店休息片刻', desc: '走了半天，回酒店休息、换衣', type: 'hotel' },
+    { time: '18:30', title: '🦀 晚餐：辣椒螃蟹 / 海南鸡饭', desc: 'No Signboard Seafood 或天天海南鸡饭', type: 'food' },
+    { time: '20:30', title: '🍦 甜品收尾：武吉士街夜市', desc: '芒果班兰冰淇淋或花生冰淇淋三明治', type: 'food' }
+  ],
+  3: [
+    { time: '09:00', title: '☕ 悠闲早餐', desc: '在酒店附近随意找咖啡馆/面包店', type: 'food' },
+    { time: '10:30', title: '🚇 前往老友记展览', desc: '地铁东西线→Orchard站，步行至25 Scotts Road', type: 'transport' },
+    { time: '11:00', title: '📺 THE FRIENDS™ EXPERIENCE', desc: '老友记沉浸式体验展 ⭐ 展览最后一天！', type: 'special' },
+    { time: '12:30', title: '🍱 午餐：乌节路美食广场', desc: 'ION Orchard地下楼层，海南鸡饭、炒粿条等', type: 'food' },
+    { time: '14:00', title: '🛍️ 乌节路购物（随意逛）', desc: 'ION Orchard、义安城、313@somerset', type: 'sight' },
+    { time: '17:00', title: '🚇 回酒店休息', desc: '乘地铁回武吉士，放下购物战利品', type: 'hotel' },
+    { time: '18:30', title: '🍜 晚餐：松发肉骨茶', desc: '新加坡老牌名店，药材汤底浓郁', type: 'food' },
+    { time: '20:00', title: '🌃 夜游滨海湾 · 鱼尾狮 & 滨海湾金沙', desc: 'Bayfront站，欣赏夜景，鱼尾狮公园拍照', type: 'sight' },
+    { time: '21:30', title: '🌿 滨海湾花园 · 擎天大树光影秀', desc: 'Garden Rhapsody 免费光影秀（可选）', type: 'sight' }
+  ],
+  4: [
+    { time: '08:30', title: '☕ 早餐：Killiney Kopitiam', desc: '新加坡最老字号咖啡馆，咖椰吐司+南洋咖啡', type: 'food' },
+    { time: '09:30', title: '🏮 牛车水（Chinatown）购手信', desc: '美珍香/林志源猪肉干、叻沙料理包、咖椰酱', type: 'sight' },
+    { time: '11:00', title: '🍲 提早午餐：老巴刹（Lau Pa Sat）', desc: '维多利亚式铸铁建筑美食中心', type: 'food' },
+    { time: '12:30', title: '🏨 回酒店 · 退房', desc: '退房办理，整理行李', type: 'hotel' },
+    { time: '13:00', title: '🚇 前往机场', desc: 'Bugis站→Changi Airport，全程约30分钟', type: 'transport' },
+    { time: '15:25', title: '✈️ TR982 起飞 · 返回香港', desc: '抵达香港国际机场约19:45', type: 'transport' }
+  ]
+};
+
+const dayNames = ['第一天 · 抵达新加坡', '第二天 · 文化街区漫游', '第三天 · 老友记展 + 乌节路', '第四天 · 牛车水 + 返程'];
+
+// ════════ 获取新加坡当前时间 ════════
+function getSGTime() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Singapore' }));
+}
+
+// ════════ 计算倒计时 ════════
+function updateCountdown() {
+  const now = getSGTime();
+  const banner = document.getElementById('countdownBanner');
+  const num = document.getElementById('countdownNum');
+  const label = document.getElementById('countdownLabel');
+  const sub = document.getElementById('countdownSub');
+
+  // 旅行前
+  if (now < tripStart) {
+    const diff = tripStart - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    
+    banner.className = 'countdown-banner countdown-pretrip';
+    num.textContent = days;
+    label.textContent = days <= 0 ? '就是今天！' : `距离出发还有 ${days} 天`;
+    sub.textContent = days <= 0 ? `还有 ${hours} 小时就要起飞啦 ✈️` : '准备好行李，新加坡见！';
+    return 0;
+  }
+
+  // 旅行中
+  if (now >= tripStart && now <= tripEnd) {
+    const dayDiff = Math.floor((now - tripStart) / (1000 * 60 * 60 * 24)) + 1;
+    const currentDay = Math.min(dayDiff, 4);
+    
+    banner.className = 'countdown-banner countdown-intrip';
+    num.textContent = `Day ${currentDay}`;
+    label.textContent = dayNames[currentDay - 1];
+    sub.textContent = '🌟 正在旅行中，享受每一刻！';
+    return currentDay;
+  }
+
+  // 旅行后
+  banner.className = 'countdown-banner countdown-after';
+  num.textContent = '✓';
+  label.textContent = '旅行已结束';
+  sub.textContent = '希望这次新加坡之旅留下了美好回忆 🦁';
+  return -1;
+}
+
+// ════════ 时间字符串转分钟 ════════
+function timeToMinutes(timeStr) {
+  const [h, m] = timeStr.split(':').map(Number);
+  return h * 60 + m;
+}
+
+// ════════ 获取当前时间（分钟） ════════
+function getCurrentMinutes() {
+  const now = getSGTime();
+  return now.getHours() * 60 + now.getMinutes();
+}
+
+// ════════ 更新今日行程提醒 ════════
+function updateNextUp(dayNum) {
+  const card = document.getElementById('nextUpCard');
+  const timeEl = document.getElementById('nextUpTime');
+  const titleEl = document.getElementById('nextUpTitle');
+  const descEl = document.getElementById('nextUpDesc');
+
+  if (dayNum <= 0 || dayNum > 4) {
+    card.classList.remove('visible');
+    return;
+  }
+
+  card.classList.add('visible');
+  const schedule = scheduleData[dayNum];
+  const currentMinutes = getCurrentMinutes();
+
+  // 找到当前或下一个活动
+  let currentActivity = null;
+  let nextActivity = null;
+
+  for (let i = 0; i < schedule.length; i++) {
+    const activityMinutes = timeToMinutes(schedule[i].time);
+    if (activityMinutes <= currentMinutes) {
+      currentActivity = schedule[i];
+      nextActivity = schedule[i + 1] || null;
+    } else if (!nextActivity) {
+      nextActivity = schedule[i];
+      break;
+    }
+  }
+
+  // 更新显示
+  if (currentActivity && !nextActivity) {
+    // 最后一个活动
+    timeEl.textContent = currentActivity.time;
+    titleEl.textContent = currentActivity.title;
+    descEl.textContent = currentActivity.desc + ' （今日行程即将结束）';
+  } else if (nextActivity) {
+    const nextMinutes = timeToMinutes(nextActivity.time);
+    const diffMinutes = nextMinutes - currentMinutes;
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffMins = diffMinutes % 60;
+    
+    timeEl.textContent = nextActivity.time;
+    titleEl.textContent = nextActivity.title;
+    
+    if (diffMinutes <= 0) {
+      descEl.textContent = '就是现在！' + nextActivity.desc;
+    } else if (diffMinutes < 60) {
+      descEl.textContent = `还有 ${diffMins} 分钟 · ${nextActivity.desc}`;
+    } else {
+      descEl.textContent = `还有 ${diffHours}小时${diffMins}分钟 · ${nextActivity.desc}`;
+    }
+  } else {
+    timeEl.textContent = '--:--';
+    titleEl.textContent = '今日暂无行程';
+    descEl.textContent = '好好休息或自由探索吧！';
+  }
+
+  // 更新日期标签状态
+  document.querySelectorAll('.day-tab').forEach(tab => {
+    tab.classList.toggle('active', parseInt(tab.dataset.day) === dayNum);
+  });
+
+  // 高亮当前活动
+  highlightCurrentActivity(dayNum, currentMinutes);
+}
+
+// ════════ 高亮时间轴中的当前活动 ════════
+function highlightCurrentActivity(dayNum, currentMinutes) {
+  // 清除所有高亮
+  document.querySelectorAll('.tl-item').forEach(item => {
+    item.classList.remove('active-item');
+  });
+
+  const schedule = scheduleData[dayNum];
+  if (!schedule) return;
+
+  // 找到当前活动索引
+  let activeIndex = -1;
+  for (let i = 0; i < schedule.length; i++) {
+    const activityMinutes = timeToMinutes(schedule[i].time);
+    const nextActivityMinutes = schedule[i + 1] ? timeToMinutes(schedule[i + 1].time) : 1440;
+    
+    if (currentMinutes >= activityMinutes && currentMinutes < nextActivityMinutes) {
+      activeIndex = i;
+      break;
+    }
+  }
+
+  if (activeIndex >= 0) {
+    // 找到对应的时间轴元素并高亮
+    const dayCard = document.querySelector(`.day${dayNum}`);
+    if (dayCard) {
+      const tlItems = dayCard.querySelectorAll('.tl-item');
+      if (tlItems[activeIndex]) {
+        tlItems[activeIndex].classList.add('active-item');
+        // 滚动到视图中
+        tlItems[activeIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }
+}
+
+// ════════ 日期切换功能 ════════
+function setupDayTabs() {
+  document.querySelectorAll('.day-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const dayNum = parseInt(tab.dataset.day);
+      updateNextUp(dayNum);
+      
+      // 滚动到对应日期
+      const dayCard = document.querySelector(`.day${dayNum}`);
+      if (dayCard) {
+        dayCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+}
+
+// ════════ 初始化 ════════
+function init() {
+  const currentDay = updateCountdown();
+  updateNextUp(currentDay);
+  setupDayTabs();
+  
+  // 每分钟更新一次
+  setInterval(() => {
+    const day = updateCountdown();
+    updateNextUp(day);
+  }, 60000);
+}
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', init);
+</script>
 
 </body>
 </html>
