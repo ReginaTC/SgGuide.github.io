@@ -415,6 +415,16 @@
       gap: 8px;
     }
     #reportMap { height: 280px; border-radius: 12px; z-index: 1; }
+    .map-fallback {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #f3d7b8;
+      background: #fff4e7;
+      color: #9a4f16;
+      font-size: 12px;
+      display: none;
+    }
 
     .photo-wall {
       display: grid;
@@ -2205,6 +2215,31 @@ function ciParseError(err) {
   return msg.length > 80 ? msg.slice(0, 80) + '...' : msg;
 }
 
+function ciCompressDataUrl(dataUrl, maxW, quality) {
+  return new Promise(function(resolve) {
+    try {
+      var img = new Image();
+      img.onload = function() {
+        var w = img.width;
+        var h = img.height;
+        var ratio = Math.min(1, (maxW || 1280) / w);
+        var cw = Math.round(w * ratio);
+        var ch = Math.round(h * ratio);
+        var canvas = document.createElement('canvas');
+        canvas.width = cw;
+        canvas.height = ch;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, cw, ch);
+        resolve(canvas.toDataURL('image/jpeg', quality || 0.75));
+      };
+      img.onerror = function() { resolve(dataUrl); };
+      img.src = dataUrl;
+    } catch (_) {
+      resolve(dataUrl);
+    }
+  });
+}
+
 async function ciSubmit() {
   if (!ciLocation) { ciToast('请先选择一个打卡地点'); return; }
   var btn = document.getElementById('ciSubmitBtn');
@@ -2221,10 +2256,12 @@ async function ciSubmit() {
         if (data && data.success && data.data && data.data.url) {
           photoUrl = data.data.url;
         } else {
-          ciToast('图片上传失败，已改为无图打卡');
+          photoUrl = await ciCompressDataUrl(ciPhotoData, 1280, 0.72);
+          ciToast('图床上传失败，已保存为本地压缩图');
         }
       } catch (imgErr) {
-        ciToast('图片上传失败，已改为无图打卡');
+        photoUrl = await ciCompressDataUrl(ciPhotoData, 1280, 0.72);
+        ciToast('图床上传失败，已保存为本地压缩图');
       }
     }
     var checkin = {
@@ -2325,7 +2362,13 @@ function ciUpdateStats() {
 }
 
 function ciInitMap() {
+  var fallback = document.getElementById('ciMapFallback');
   if (!document.getElementById('ciReportMap')) return;
+  if (typeof L === 'undefined') {
+    if (fallback) fallback.style.display = 'block';
+    return;
+  }
+  if (fallback) fallback.style.display = 'none';
   map = L.map('ciReportMap').setView([1.29, 103.85], 12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM' }).addTo(map);
 }
@@ -2346,21 +2389,26 @@ function ciRenderMap() {
   ciMarkers.forEach(function(m) { map.removeLayer(m); });
   ciMarkers = [];
   var userColors = ['', '#e63946', '#3498db'];
+  var pathPoints = [];
   allCheckins.forEach(function(c) {
+    var lat = Number(c.lat);
+    var lng = Number(c.lng);
+    if (!isFinite(lat) || !isFinite(lng)) return;
     var icon = L.divIcon({
       html: '<div style="background:' + userColors[c.user] + ';color:white;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:bold;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">' + (c.user === 1 ? 'R' : 'S') + '</div>',
       className: '', iconSize: [32, 32], iconAnchor: [16, 16]
     });
-    var marker = L.marker([c.lat, c.lng], { icon: icon }).addTo(map);
+    var marker = L.marker([lat, lng], { icon: icon }).addTo(map);
     marker.bindPopup('<b>' + c.locationName + '</b>');
     ciMarkers.push(marker);
+    pathPoints.push([lat, lng]);
   });
-  if (allCheckins.length > 1) {
-    L.polyline(allCheckins.map(function(c) { return [c.lat, c.lng]; }), { color: '#e63946', weight: 3, opacity: 0.6, dashArray: '8,6' }).addTo(map);
+  if (pathPoints.length > 1) {
+    L.polyline(pathPoints, { color: '#e63946', weight: 3, opacity: 0.6, dashArray: '8,6' }).addTo(map);
   }
-  if (allCheckins.length > 0) {
-    var lats = allCheckins.map(function(c) { return c.lat; });
-    var lngs = allCheckins.map(function(c) { return c.lng; });
+  if (pathPoints.length > 0) {
+    var lats = pathPoints.map(function(p) { return p[0]; });
+    var lngs = pathPoints.map(function(p) { return p[1]; });
     map.fitBounds([[Math.min.apply(null, lats), Math.min.apply(null, lngs)], [Math.max.apply(null, lats), Math.max.apply(null, lngs)]], { padding: [30, 30] });
   }
 }
@@ -2480,6 +2528,7 @@ var checkinsRef = db.ref('sg-trip-2026/checkins');
   <div class="report-section">
     <h3>🗺️ 打卡轨迹</h3>
     <div id="ciReportMap"></div>
+    <div class="map-fallback" id="ciMapFallback">地图资源加载失败（网络限制），已保留打卡列表与时间轴数据。</div>
   </div>
 
   <div class="report-section">
